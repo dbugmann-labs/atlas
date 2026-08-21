@@ -121,7 +121,14 @@ openspec validate --archived        # every archived tasks.md box ticked
 
 Homebrew is unusable here: `/opt/homebrew` is owned by `admin:admin` and this account is not
 in the `admin` group, and there is no passwordless sudo. Never suggest `brew install` or
-`sudo chown`. Node comes from fnm in `~/.local/share/fnm`, pnpm from `~/Library/pnpm`.
+`sudo chown`. Node comes from fnm in `~/.local/share/fnm`, pnpm from `~/Library/pnpm/bin` — note the
+binary is `$PNPM_HOME/bin/pnpm`, not `$PNPM_HOME/pnpm`. A non-interactive shell will not have
+either on PATH, so prefix commands with:
+
+```bash
+export PNPM_HOME="$HOME/Library/pnpm"; export PATH="$PNPM_HOME/bin:$PATH"
+```
+
 Anything new must install into `$HOME`.
 
 Dependency installs are gated by `minimumReleaseAge: 1440` in `pnpm-workspace.yaml` — pnpm

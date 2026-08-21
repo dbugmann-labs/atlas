@@ -1,0 +1,34 @@
+name: Epic
+description: A large outcome spanning several Features. Requirements do NOT go here.
+title: "<outcome, a few words>"
+type: Epic
+labels: ["needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Issues carry no requirements** — `AGENTS.md` rule 4, `docs/adr/0002-systems-of-record.md`.
+        Requirements live in `openspec/specs/**`. This body is a stub: intent and boundary only.
+        If an issue and a spec disagree, the spec wins and the issue is wrong.
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: One sentence. What is true once this Epic is done?
+      placeholder: A user can …
+    validations:
+      required: true
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Not in this Epic
+      description: >-
+        Boundary, not requirements. Name what a reader could reasonably assume is included
+        but is not, so Feature decomposition does not drift.
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        Child Features attach as **sub-issues**. Do not list them here by hand — `docs/graph.mmd`
+        is generated from the sub-issue edges, not from this body.
