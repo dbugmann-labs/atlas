@@ -122,14 +122,18 @@ openspec validate --archived        # every archived tasks.md box ticked
 Homebrew is unusable here: `/opt/homebrew` is owned by `admin:admin` and this account is not
 in the `admin` group, and there is no passwordless sudo. Never suggest `brew install` or
 `sudo chown`. Node comes from fnm in `~/.local/share/fnm`, pnpm from `~/Library/pnpm/bin` — note the
-binary is `$PNPM_HOME/bin/pnpm`, not `$PNPM_HOME/pnpm`. A non-interactive shell will not have
-either on PATH, so prefix commands with:
+binary is `$PNPM_HOME/bin/pnpm`, not `$PNPM_HOME/pnpm`. Anything new must install into `$HOME`.
+
+**A non-interactive shell has neither on PATH and defaults to Node 20.** On Node 20
+`pnpm run test` fails at startup with `ERR_INVALID_ARG_VALUE ... styleText` from rolldown —
+an error that names neither Node nor the version. Open every Bash session with:
 
 ```bash
-export PNPM_HOME="$HOME/Library/pnpm"; export PATH="$PNPM_HOME/bin:$PATH"
+export PNPM_HOME="$HOME/Library/pnpm"; export FNM_DIR="$HOME/.local/share/fnm"
+export PATH="$PNPM_HOME/bin:$FNM_DIR:$PATH"; eval "$(fnm env)"; fnm use 24
 ```
 
-Anything new must install into `$HOME`.
+If a tool fails oddly, run `node --version` before diagnosing anything else.
 
 Dependency installs are gated by `minimumReleaseAge: 1440` in `pnpm-workspace.yaml` — pnpm
 refuses versions published in the last 24h. If an install fails that check, do not add an
