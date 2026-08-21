@@ -1,0 +1,65 @@
+name: Story
+description: One Story = one change = one branch = one PR. Title is the change id, verbatim.
+title: "<verb-first-change-id>"
+type: Task
+labels: ["needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Issues carry no requirements** — `AGENTS.md` rule 4. This body holds one sentence of
+        intent, a link to the change folder, and the gate boxes. Everything else lives in
+        `openspec/changes/<change-id>/`. **The issue title must equal the change id, verbatim.**
+  - type: input
+    id: change-id
+    attributes:
+      label: Change id
+      description: Kebab-case, verb-first. Must match this issue's title exactly.
+      placeholder: add-version-command
+    validations:
+      required: true
+  - type: textarea
+    id: intent
+    attributes:
+      label: Intent
+      description: One sentence. Not acceptance criteria.
+    validations:
+      required: true
+  - type: input
+    id: feature
+    attributes:
+      label: Parent Feature
+      description: Issue number. Also attach this issue as a sub-issue of it.
+      placeholder: "#2"
+    validations:
+      required: true
+  - type: input
+    id: blocked-by
+    attributes:
+      label: Blocked by
+      description: Story issue numbers that must close first. Leave empty if none. Must stay acyclic.
+      placeholder: "#3, #4"
+    validations:
+      required: false
+  - type: checkboxes
+    id: dor
+    attributes:
+      label: Definition of ready (G4 — no implementation commit may precede the last box)
+      options:
+        - label: Sub-issue of exactly one Feature, which is a sub-issue of exactly one Epic
+        - label: Intent stated in one sentence
+        - label: Every blocking Story closed
+        - label: No open questions left by the grill
+        - label: "Change folder exists; `openspec validate <change-id> --strict` exits 0"
+        - label: "Seam(s) named in `design.md`"
+        - label: "Human `approved` comment on this issue (**G4**)"
+  - type: checkboxes
+    id: dod
+    attributes:
+      label: Definition of done
+      options:
+        - label: Every scenario in the delta has a passing, name-matched acceptance test
+        - label: "`pnpm run verify` green; full CI green"
+        - label: "`code-review` clean on both axes (**G7**)"
+        - label: ADR written if a decision was hard, reversible-with-pain, or surprising
+        - label: "`/opsx:archive` run as the last commit on the branch"

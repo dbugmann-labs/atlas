@@ -1,0 +1,44 @@
+name: Feature
+description: One capability, anchored by openspec/specs/<capability>/spec.md.
+title: "<capability-slug>: <short intent>"
+type: Feature
+labels: ["needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Issues carry no requirements** — `AGENTS.md` rule 4. The requirements for this Feature
+        accumulate in `openspec/specs/<capability>/spec.md`, written only by `/opsx:archive`.
+        Never hand-edit that file, and never paste its content here.
+  - type: input
+    id: capability
+    attributes:
+      label: Capability slug
+      description: The directory under `openspec/specs/`. Kebab-case, noun-first.
+      placeholder: cli-version
+    validations:
+      required: true
+  - type: textarea
+    id: intent
+    attributes:
+      label: Intent
+      description: One sentence.
+    validations:
+      required: true
+  - type: input
+    id: epic
+    attributes:
+      label: Parent Epic
+      description: Issue number. Also attach this issue as a sub-issue of it.
+      placeholder: "#1"
+    validations:
+      required: true
+  - type: checkboxes
+    id: g1
+    attributes:
+      label: G1 — Feature ready
+      description: All three must hold before Story decomposition begins.
+      options:
+        - label: Names exactly one capability
+        - label: Capability slug decided and recorded above
+        - label: Attached as a sub-issue of exactly one Epic
