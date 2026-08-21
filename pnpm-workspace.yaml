@@ -1,0 +1,5 @@
+# Supply-chain quarantine: refuse dependency versions published less than
+# 24h ago. Setting this explicitly also turns on minimumReleaseAgeStrict,
+# so resolution FAILS loudly instead of silently falling back to a fresh
+# version. See docs/adr/0011-supply-chain-quarantine.md
+minimumReleaseAge: 1440
