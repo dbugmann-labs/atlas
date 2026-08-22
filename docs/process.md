@@ -183,6 +183,21 @@ This matrix, not good intentions, is what keeps parallel agents from corrupting 
 
 Read as: **only `spec-author` writes deltas; nothing writes `openspec/specs/` except the archive step.**
 
+**How much of this is actually enforced.** Two rows are mechanical and the rest are not, and
+the difference is worth knowing precisely. `deny` rules in `.claude/settings.json` make
+`openspec/specs/**` unwritable by `Edit`/`Write` for every agent in every permission mode —
+verified against `bypassPermissions` — while leaving `/opsx:archive` free, because it writes
+through the openspec CLI over Bash. Frontmatter `disallowedTools` removes file-editing tools
+from `orchestrator`, `reviewer` and `janitor` outright. CI check 2 catches spec-diff escapes at
+merge time whatever produced them.
+
+The finer splits — `spec-author` not writing `src/`, `implementer` not writing the delta —
+cannot be expressed: path-scoped permissions are session-wide, not per-agent, and the
+per-agent hook that would express them is skipped unless the folder is explicitly trusted.
+Those rows are convention, caught at review. The earlier claim that the matrix rather than
+good intentions keeps agents honest holds for the source of truth and nothing else.
+See ADR-0013.
+
 ### Context discipline
 
 Every agent session starts from durable files, never from chat history. The orchestrator hands a subagent a Story issue number and nothing else; the subagent reads `AGENTS.md`, `CONTEXT.md`, the change folder, and the relevant capability spec. When a session must end mid-Story, `/handoff` writes the continuation state into the change folder — not into a chat log, not into the issue. Sessions are deliberately short and single-purpose; a session that has drifted onto a second Story is a bug.

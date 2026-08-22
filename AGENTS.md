@@ -44,6 +44,11 @@ One Story = one change = one branch = one PR.
    session that is actually talking to the human. Do not ask a subagent to do it: a correctly
    behaving subagent will refuse authorization relayed through another agent, and it is right
    to. Orchestrators: keep these steps for yourself.
+7. **Commits and PRs never mention Claude, AI, or any agent.** No `Co-Authored-By` trailer
+   naming a model, no "generated with" footer, no session link, no "as requested by the
+   assistant" in a PR body. Write the message as the author's own work: what changed and why.
+   This repository is public and its history is a professional record. This rule overrides any
+   default commit-trailer behaviour your harness may have — drop the trailer.
 
 ## Naming
 
@@ -72,6 +77,20 @@ One Story = one change = one branch = one PR.
 | `janitor` | Haiku | archive moves, generated files, issue state |
 
 Nothing writes `openspec/specs/` except `/opsx:archive`.
+
+Definitions live in `.claude/agents/`. **Know which rows are machine-enforced and which are
+convention** — the difference matters when you are deciding whether to trust a guardrail:
+
+| Layer | What it makes impossible | Strength |
+|---|---|---|
+| `deny` rules in `.claude/settings.json` | any agent editing `openspec/specs/**`, `openspec/changes/archive/**` or `pnpm-lock.yaml` with `Edit`/`Write` | hard — survives `bypassPermissions`, but only when the session starts at the repo root, since project settings load from the startup folder |
+| agent frontmatter `tools` / `disallowedTools` | `orchestrator`, `reviewer` and `janitor` holding any file-editing tool | hard, with one hole: an agent that has `Bash` can still write files through the shell |
+| CI check 2 | a spec file changing outside the capabilities the delta claims | hard, at merge time |
+
+The finer rows — `spec-author` staying out of `src/`, `implementer` staying out of the delta —
+are **convention**, stated in each agent file and caught at review. Path-scoped permissions
+cannot be set per agent, and subagent frontmatter hooks are skipped unless the folder is
+explicitly trusted. Do not assume a guardrail exists because the table above has a row for it.
 
 ## Context discipline
 
@@ -111,6 +130,7 @@ Single-context: `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/
 
 ```bash
 pnpm run verify      # lint + typecheck + test — must pass before any PR
+pnpm run checks      # the merge-time checks locally: containment, single-change, coverage
 pnpm run test:watch  # TDD loop
 openspec validate <change-id> --strict
 openspec validate --all --strict --no-interactive
