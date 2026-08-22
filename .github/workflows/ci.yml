@@ -1,0 +1,57 @@
+# The merge-time check. docs/process.md §7 numbers these 1..6; the step names
+# below carry those numbers so a red run maps onto the written process.
+#
+# Checks 2, 3 and 4 are bespoke scripts in scripts/. They are the most likely
+# part of this system to rot; Phase 4 revisits whether they earned their keep.
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # The bespoke checks diff against the merge-base with main, so the
+          # full history has to be present.
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: 1 · openspec validate --all --strict
+        run: pnpm run spec:validate
+
+      - name: 2 · spec-diff containment
+        run: pnpm run check:specs
+
+      - name: 3 · single-change rule
+        run: pnpm run check:change
+
+      - name: 4 · scenario coverage
+        run: pnpm run check:scenarios
+
+      - name: 5 · lint, typecheck, test
+        run: pnpm run verify
+
+      - name: 6 · openspec validate --archived
+        run: pnpm run spec:validate:archived
