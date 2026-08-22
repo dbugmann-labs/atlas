@@ -22,3 +22,4 @@ reading the code later. Do not write one for choices the code already makes obvi
 | [0009](0009-skill-inventory.md) | Install the skills plugin whole; four skills are never invoked |
 | [0010](0010-tdd-enforcement.md) | TDD is enforced by convention and a PR-time lint, not commit-order forensics |
 | [0011](0011-supply-chain-quarantine.md) | Dependency versions are quarantined for 24 hours |
+| [0012](0012-no-project-board.md) | No GitHub Project board; the gate checkboxes are the status |
