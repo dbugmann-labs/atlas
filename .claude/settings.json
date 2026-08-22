@@ -1,5 +1,12 @@
 {
   "enabledPlugins": {
     "mattpocock-skills@claude-plugins-official": true
+  },
+  "permissions": {
+    "deny": [
+      "Edit(/openspec/specs/**)",
+      "Edit(/openspec/changes/archive/**)",
+      "Edit(/pnpm-lock.yaml)"
+    ]
   }
 }
