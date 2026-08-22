@@ -4,16 +4,25 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.22.0",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "verify": "pnpm run lint && pnpm run typecheck && pnpm run test"
+    "verify": "pnpm run lint && pnpm run typecheck && pnpm run test",
+    "check:specs": "node scripts/check-spec-containment.ts",
+    "check:change": "node scripts/check-single-change.ts",
+    "check:scenarios": "node scripts/check-scenario-coverage.ts",
+    "checks": "pnpm run check:specs && pnpm run check:change && pnpm run check:scenarios",
+    "spec:validate": "openspec validate --all --strict --no-interactive",
+    "spec:validate:archived": "openspec validate --archived"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@fission-ai/openspec": "1.10.0",
     "@types/node": "^24.13.3",
     "eslint": "^10.8.1",
     "typescript": "5.9.3",
