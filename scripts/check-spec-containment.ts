@@ -40,7 +40,7 @@ const loc = locateChange(branch.changeId)
 if (loc === null) {
   fail(CHECK, [
     `No change folder for "${branch.changeId}".`,
-    `Looked in openspec/changes/${branch.changeId}/ and openspec/changes/archive/${branch.changeId}/.`,
+    `Looked in openspec/changes/${branch.changeId}/ and openspec/changes/archive/<date>-${branch.changeId}/.`,
     'A story branch must carry the change folder its name refers to.',
   ])
 }

@@ -70,9 +70,26 @@ export function changedCommitMessages(): { sha: string; message: string }[] {
 
 export type ChangeLocation = { changeId: string; dir: string; archived: boolean }
 
+/**
+ * The date prefix `/opsx:archive` puts on an archived folder, e.g.
+ * `2026-08-21-add-version-command`. The form is OpenSpec's, recorded in docs/process.md §5;
+ * the change id itself never carries a date, so the two have to be related by stripping it.
+ */
+const ARCHIVE_DATE_PREFIX = /^\d{4}-\d{2}-\d{2}-/
+
+/** The change id inside an archive folder name, dated or not. */
+export function archivedChangeId(folder: string): string {
+  return folder.replace(ARCHIVE_DATE_PREFIX, '')
+}
+
 export function locateChange(changeId: string): ChangeLocation | null {
-  const archived = path.join('openspec', 'changes', 'archive', changeId)
-  if (existsSync(archived)) return { changeId, dir: archived, archived: true }
+  const archiveRoot = path.join('openspec', 'changes', 'archive')
+  if (existsSync(archiveRoot)) {
+    for (const entry of readdirSync(archiveRoot, { withFileTypes: true })) {
+      if (!entry.isDirectory() || archivedChangeId(entry.name) !== changeId) continue
+      return { changeId, dir: path.join(archiveRoot, entry.name), archived: true }
+    }
+  }
   const active = path.join('openspec', 'changes', changeId)
   if (existsSync(active)) return { changeId, dir: active, archived: false }
   return null
