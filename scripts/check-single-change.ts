@@ -7,7 +7,7 @@
  * name embeds the change id.
  */
 import { existsSync } from 'node:fs'
-import { changedFiles, currentBranch, fail, parseBranch, pass, skip } from './lib/ci.ts'
+import { changedFiles, currentBranch, fail, inCI, locateChange, note, parseBranch, pass, skip } from './lib/ci.ts'
 
 const CHECK = 'single-change rule'
 const branch = parseBranch(currentBranch())
@@ -45,6 +45,15 @@ if (branch.kind === 'chore') {
 }
 
 const { changeId } = branch
+
+// Before Stage 8 the change is still active and nothing has been archived yet. That is the
+// normal state for most of a Story's life, so locally this reports rather than fails. In CI
+// the PR is claiming to be finished, so it binds.
+const located = locateChange(changeId)
+if (!inCI && located !== null && !located.archived) {
+  note(CHECK, `"${changeId}" is still active — archive runs at Stage 8; this check binds at PR time`)
+  process.exit(0)
+}
 
 if (!archived.has(changeId)) {
   fail(CHECK, [

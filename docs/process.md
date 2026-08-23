@@ -115,8 +115,8 @@ Ten stages, five gates. **Gate** means work stops until a named condition holds.
 | 0 | Epic intake | you | `orchestrator` / Opus | Epic issue | — |
 | 1 | Feature definition | you | `orchestrator` / Opus | Feature issue, sub-issue of Epic | **G1 (H)** |
 | 2 | Story decomposition | `/to-tickets` on the Feature | `orchestrator` / Opus | Story issues, sub-issues of Feature, blocking edges declared | **G2 (H)** |
-| 3 | Grill | `/grill-with-docs` | `spec-author` / Opus | updated `CONTEXT.md`, open questions closed | — |
-| 4 | Propose | `/opsx:propose <change-id>` | `spec-author` / Opus | change folder: proposal, delta specs, design, tasks | **G4 (H+CI)** ← the hard gate |
+| 3 | Grill | `/grill-with-docs` | `spec-author` / Opus | `design.md` **Open Questions** filled in — "None" is a valid and required answer — plus any new `CONTEXT.md` terms | — |
+| 4 | Propose | `/opsx:propose <change-id>` | `spec-author` / Opus | change folder: proposal, delta specs, design, tasks — cut the branch here, commit as `docs(<capability>): propose <change-id>` | **G4 (H+CI)** ← the hard gate |
 | 5 | Red | first unsatisfied scenario | `implementer` / Sonnet | one failing acceptance test | A |
 | 6 | Green + next | `/opsx:apply` driving `/tdd` | `implementer` / Sonnet | one scenario per cycle until the delta is satisfied | A |
 | 7 | Review | `/code-review` | `reviewer` / Opus | findings, two-axis: standards + spec fidelity | **G7 (H)** |
@@ -133,9 +133,11 @@ Ten stages, five gates. **Gate** means work stops until a named condition holds.
 - `openspec validate <change-id> --strict` exits 0
 - the delta uses ADDED / MODIFIED / REMOVED correctly against current specs
 - every requirement has at least one scenario, and the error/edge cases have scenarios, not just the happy path
-- you have read `proposal.md` and the delta and commented `approved` on the Story issue
+- you have read `proposal.md` and the delta, and the Story issue carries a comment beginning `G4: approved`
 
-No implementation commit may precede that comment. Enforcement is in §7.
+No implementation commit may precede that comment. Enforcement is CI check 5 in §7.
+
+The **decision** must be a human's; the keystrokes need not be. A human may say "approved" and have an agent record it. The marker is the exact line `G4: approved`, not the bare word, because "approved" occurs constantly in ordinary prose and an agent writing *"waiting on the approved comment"* would otherwise forge the gate for any grep-based reader.
 
 **G7 — Review clean.** `code-review` reports no unresolved findings on either axis. The reviewer never edits code; it reports and the implementer fixes.
 
@@ -181,6 +183,8 @@ This matrix, not good intentions, is what keeps parallel agents from corrupting 
 | `reviewer` | Opus | ✗ | ✗ | ✗ | ✗ | comment |
 | `janitor` | Haiku | via `/opsx:archive` only | move to `archive/` | ✗ | ✗ | close/update |
 
+`CONTEXT.md` is written by `spec-author` alone, at Stage 3, and by nobody else — it is the one shared file outside `openspec/` that the matrix governs.
+
 Read as: **only `spec-author` writes deltas; nothing writes `openspec/specs/` except the archive step.**
 
 **How much of this is actually enforced.** Two rows are mechanical and the rest are not, and
@@ -218,10 +222,16 @@ You start with **one concurrent Story**, where two changes cannot possibly race 
 2. **Spec-diff containment** — every file changed under `openspec/specs/` must belong to a capability named in the archived change's delta. On a `chore/` branch the set must be empty. This is the check that makes the source of truth safe.
 3. **Single-change rule** — a `story/` PR adds exactly one directory under `openspec/changes/archive/` and leaves no active change folder behind for that Story.
 4. **Scenario coverage** — every `#### Scenario:` in the change's delta has an acceptance test whose title matches it verbatim. See §8.
-5. `pnpm lint && pnpm typecheck && pnpm test`
-6. `openspec validate --archived` — every `tasks.md` checkbox in the newly archived change is ticked.
+5. **G4 approval recorded** — the Story issue carries a comment beginning `G4: approved`. This is what turns "no implementation before G4" from a convention into a red build.
+6. **Commit hygiene** — no commit on the branch carries an attribution trailer or names a tool (§hard rule 7).
+7. `pnpm run verify` — lint, typecheck, test.
+8. `openspec validate --archived` — every `tasks.md` checkbox in the newly archived change is ticked.
 
-Checks 2, 3 and 4 are bespoke scripts in `scripts/`. They are the most likely part of this system to rot, and Phase 4 revisits whether they earned their keep.
+Checks 2–6 are bespoke scripts in `scripts/`. They are the most likely part of this system to rot, and Phase 4 revisits whether they earned their keep.
+
+**Checks 3 and 4 are staged.** Run locally on a Story still in flight they report rather than fail — the single-change rule reads "still active" until the archive at Stage 8, and scenario coverage reports how many scenarios are covered and names the next one. Failing locally would demand every acceptance test at once, which is precisely the bulk transcription §8 forbids. In CI they bind, because a PR asserts the Story is finished.
+
+**What check 5 can and cannot prove.** Agents act through the repository owner's token, so no check can prove a human rather than an agent wrote a comment. Check 5 proves the decision was *recorded*, which converts a silent omission into a blocked merge. The gate's integrity rests on agents never originating the marker — stated in `AGENTS.md` rule 1 and in `docs/agents/issue-tracker.md`. ADR-0014 records why the marker is `G4: approved` and not the bare word.
 
 > **What check 2 gives up.** The stricter form of this rule — "a story branch may never touch `openspec/specs/` at all" — is airtight and needs no script, but it forces archiving into a second PR. Containment is the weaker guarantee that survives one-PR archiving: it blocks unrelated or hand-edited spec changes, but cannot prove the diff is byte-for-byte what `/opsx:archive` would have produced. Accepted deliberately; recorded in ADR-0004.
 
@@ -256,10 +266,12 @@ The seam is agreed *before* any test is written, per the `tdd` skill — the few
 - [ ] Seam(s) named in `design.md`
 - [ ] Human `approved` comment on the issue (**G4**)
 
+**Who ticks a box.** Whoever can verify the condition: the orchestrator ticks G1 and G2, the implementer ticks the machine-checkable DoR and DoD boxes. Ticking asserts the condition holds, not that a human looked. The one line no agent may write is the G4 marker, which is a comment rather than a checkbox precisely so the two cannot be confused.
+
 ### DoD — a Story is finished
 
 - [ ] Every scenario in the delta has a passing, name-matched acceptance test
-- [ ] `pnpm lint typecheck test` green; full CI green
+- [ ] `pnpm run verify` green; full CI green
 - [ ] `code-review` clean on both axes
 - [ ] ADR written if a decision was hard, reversible-with-pain, or surprising
 - [ ] `/opsx:archive` run as the last commit on the branch: `openspec/specs/` updated, change under `changes/archive/`, every `tasks.md` box ticked
@@ -295,7 +307,7 @@ So "disabled" below means **never invoke**, enforced by `AGENTS.md` and backed b
 
 ---
 
-## 11. ADR register — to be written in Phase 2
+## 11. ADR register
 
 | ADR | Decision |
 |---|---|
@@ -310,6 +322,11 @@ So "disabled" below means **never invoke**, enforced by `AGENTS.md` and backed b
 | 0009 | Skill inventory: which skills are never invoked, and why no disable mechanism is needed |
 | 0010 | TDD enforced by convention plus PR-time coverage lint, not commit-order forensics |
 | 0011 | Supply-chain quarantine: `minimumReleaseAge` set explicitly so pnpm fails on freshly-published versions rather than silently falling back |
+| 0012 | No GitHub Project board; the gate checkboxes are the status |
+| 0013 | The write-permission matrix is enforced in three layers, and only partly |
+| 0014 | G4 is a relayed human decision, recorded as `G4: approved` and enforced at merge time |
+
+All fourteen are written; `docs/adr/README.md` is the live index.
 
 ADRs are immutable once accepted. A reversal is a new ADR that supersedes the old one; the old file stays.
 
@@ -322,6 +339,8 @@ Honestly: **it is at the ceiling of what one person at 4–8h/week can carry, an
 The gates cost you roughly 45–90 minutes of *your own* time per Story — reading a proposal and delta at G4, accepting a decomposition at G2, reading review findings at G7. If a Story is three hours of agent work, that is a 25–50% tax. You are buying: specs that stay true, a cold agent that needs no explanation, and decisions you can still reconstruct in a year. That is a good trade *if and only if the tax amortises* — which means:
 
 **A Story smaller than roughly two hours of work must not go through the full pipeline.** Batch it into a larger change, or route it through `chore/`. The single fastest way to make this apparatus feel absurd is to run a five-line fix through ten stages.
+
+*One exception:* a Story whose purpose is to exercise the pipeline itself — a scaffolding dry run, or a rehearsal after the process changes materially. There the trivial size is the point, because the work must not distract from the machinery being tested. Say so in the Story's intent. Absent that sentence, this rule stands and a cold agent should push back on the assignment rather than proceed.
 
 ### If it hurts, cut in this order
 

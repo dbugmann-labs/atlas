@@ -24,3 +24,4 @@ reading the code later. Do not write one for choices the code already makes obvi
 | [0011](0011-supply-chain-quarantine.md) | Dependency versions are quarantined for 24 hours |
 | [0012](0012-no-project-board.md) | No GitHub Project board; the gate checkboxes are the status |
 | [0013](0013-permission-matrix-enforcement.md) | The write-permission matrix is enforced in three layers, and only partly |
+| [0014](0014-g4-approval-marker.md) | G4 is a relayed human decision, recorded as `G4: approved` and enforced at merge time |

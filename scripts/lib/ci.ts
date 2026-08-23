@@ -9,6 +9,9 @@ import { execFileSync } from 'node:child_process'
 import { existsSync, readdirSync } from 'node:fs'
 import path from 'node:path'
 
+/** True inside GitHub Actions. Several checks are advisory locally and binding at PR time. */
+export const inCI = process.env['GITHUB_ACTIONS'] === 'true' || process.env['CI'] === 'true'
+
 export type Branch =
   | { kind: 'story'; issue: number; changeId: string; raw: string }
   | { kind: 'chore'; raw: string }
@@ -54,6 +57,17 @@ function refExists(ref: string): boolean {
   }
 }
 
+/** Commit sha + full message for each commit this branch adds over its base. */
+export function changedCommitMessages(): { sha: string; message: string }[] {
+  const base = process.env['GITHUB_BASE_REF'] ?? 'main'
+  const remote = `origin/${base}`
+  const ref = refExists(remote) ? remote : base
+  const mergeBase = git(['merge-base', ref, 'HEAD'])
+  const shas = git(['rev-list', `${mergeBase}..HEAD`])
+  if (shas === '') return []
+  return shas.split('\n').map((sha) => ({ sha, message: git(['log', '-1', '--format=%B', sha]) }))
+}
+
 export type ChangeLocation = { changeId: string; dir: string; archived: boolean }
 
 export function locateChange(changeId: string): ChangeLocation | null {
@@ -81,6 +95,10 @@ export function deltaCapabilities(loc: ChangeLocation): string[] {
 export function specCapability(file: string): string | null {
   const rest = file.split('/').slice(2)
   return rest.length >= 2 ? rest[0]! : null
+}
+
+export function note(check: string, detail: string): void {
+  console.log(`i ${check} — ${detail}`)
 }
 
 export function fail(check: string, lines: string[]): never {

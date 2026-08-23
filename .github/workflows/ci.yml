@@ -13,6 +13,8 @@ on:
 
 permissions:
   contents: read
+  # check 5 reads the Story issue's comments to confirm the G4 approval is recorded
+  issues: read
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -50,8 +52,16 @@ jobs:
       - name: 4 · scenario coverage
         run: pnpm run check:scenarios
 
-      - name: 5 · lint, typecheck, test
+      - name: 5 · G4 approval recorded
+        run: pnpm run check:g4
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 6 · commit hygiene
+        run: pnpm run check:hygiene
+
+      - name: 7 · lint, typecheck, test
         run: pnpm run verify
 
-      - name: 6 · openspec validate --archived
+      - name: 8 · openspec validate --archived
         run: pnpm run spec:validate:archived

@@ -1,8 +1,7 @@
 name: Feature
 description: One capability, anchored by openspec/specs/<capability>/spec.md.
-title: "<capability-slug>: <short intent>"
+title: "FEAT: <capability-slug>"
 type: Feature
-labels: ["needs-triage"]
 body:
   - type: markdown
     attributes:
@@ -41,4 +40,4 @@ body:
       options:
         - label: Names exactly one capability
         - label: Capability slug decided and recorded above
-        - label: Attached as a sub-issue of exactly one Epic
+        - label: Attached as a sub-issue of exactly one Epic (a real sub-issue edge, not a "Parent:" line)
