@@ -7,7 +7,7 @@
  * name embeds the change id.
  */
 import { existsSync } from 'node:fs'
-import { changedFiles, currentBranch, fail, inCI, locateChange, note, parseBranch, pass, skip } from './lib/ci.ts'
+import { archivedChangeId, changedFiles, currentBranch, fail, inCI, locateChange, note, parseBranch, pass, skip } from './lib/ci.ts'
 
 const CHECK = 'single-change rule'
 const branch = parseBranch(currentBranch())
@@ -24,7 +24,7 @@ for (const file of changedFiles()) {
   if (!file.startsWith('openspec/changes/')) continue
   const rest = file.split('/').slice(2)
   if (rest[0] === 'archive') {
-    if (rest.length >= 3) archived.add(rest[1]!)
+    if (rest.length >= 3) archived.add(archivedChangeId(rest[1]!))
   } else if (rest.length >= 2) {
     active.add(rest[0]!)
   }
@@ -57,7 +57,7 @@ if (!inCI && located !== null && !located.archived) {
 
 if (!archived.has(changeId)) {
   fail(CHECK, [
-    `Nothing was archived under openspec/changes/archive/${changeId}/.`,
+    `Nothing was archived under openspec/changes/archive/<date>-${changeId}/.`,
     'Run /opsx:archive as the last commit on this branch — archiving happens in',
     'the story PR, not a follow-up (docs/process.md §4).',
   ])
