@@ -2,7 +2,6 @@ name: Story
 description: One Story = one change = one branch = one PR. Title is the change id, verbatim.
 title: "<verb-first-change-id>"
 type: Task
-labels: ["needs-triage"]
 body:
   - type: markdown
     attributes:
@@ -52,7 +51,7 @@ body:
         - label: No open questions left by the grill
         - label: "Change folder exists; `openspec validate <change-id> --strict` exits 0"
         - label: "Seam(s) named in `design.md`"
-        - label: "Human `approved` comment on this issue (**G4**)"
+        - label: "A comment on this issue begins `G4: approved` — recorded by a human, or relayed on a human's instruction. No agent may originate it."
   - type: checkboxes
     id: dod
     attributes:

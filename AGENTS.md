@@ -28,8 +28,12 @@ One Story = one change = one branch = one PR.
 ## Hard rules
 
 1. **No implementation before G4.** A Story may not be implemented until its change folder
-   exists, `openspec validate <change-id> --strict` exits 0, and the human has commented
-   `approved` on the Story issue. If that comment is absent, stop and ask.
+   exists, `openspec validate <change-id> --strict` exits 0, and the Story issue carries a
+   comment beginning with the exact line `G4: approved`. Check with `pnpm run check:g4`. If it
+   is absent, stop and ask. The **decision** must be a human's; the keystrokes need not be — a
+   human may tell you "approved" and have you record it. Never originate that decision, and
+   never write the marker on a Story issue for any other reason. See
+   `docs/agents/issue-tracker.md`.
 2. **Never hand-edit `openspec/specs/`.** It is written by `/opsx:archive` and nothing else.
 3. **One scenario at a time.** Each red-green cycle takes the next unsatisfied
    `#### Scenario:` from the delta, writes exactly one acceptance test named identically to
@@ -55,8 +59,10 @@ One Story = one change = one branch = one PR.
 | Thing | Form |
 |---|---|
 | Change id | kebab, verb-first — `add-version-command` |
+| Epic issue title | `EPIC: <noun phrase>` |
+| Feature issue title | `FEAT: <capability-slug>` |
 | Story issue title | the change id, verbatim |
-| Branch | `story/<issue#>-<change-id>` |
+| Branch | `story/<issue#>-<change-id>`, cut from `origin/main` at Stage 4 |
 | Chore branch | `chore/<slug>` — no behaviour change, no Story needed |
 | Commit | Conventional Commits — `feat(cli-version): print version` |
 | ADR | `docs/adr/NNNN-kebab-title.md` |
@@ -91,6 +97,19 @@ The finer rows — `spec-author` staying out of `src/`, `implementer` staying ou
 are **convention**, stated in each agent file and caught at review. Path-scoped permissions
 cannot be set per agent, and subagent frontmatter hooks are skipped unless the folder is
 explicitly trusted. Do not assume a guardrail exists because the table above has a row for it.
+
+## Vocabulary you need before Stage 4
+
+**Seam** — the single boundary at which acceptance tests attach: one exported function or
+entry point, named in the change's `design.md`, whose inputs and outputs a test can drive
+without spawning a process or capturing global streams. Fewer seams are better and an existing
+seam beats a new one. A Story whose `design.md` names no seam fails the Definition of Ready.
+
+Note that the openspec `design` template (Context / Goals / Decisions / Risks / Migration /
+Open Questions) has **no seam section** — add `### The seam` under Decisions yourself, or you
+will write a `design.md` that validates and still fails the DoR.
+
+The rest of the process vocabulary is in `CONTEXT.md`.
 
 ## Context discipline
 
@@ -130,12 +149,44 @@ Single-context: `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/
 
 ```bash
 pnpm run verify      # lint + typecheck + test — must pass before any PR
-pnpm run checks      # the merge-time checks locally: containment, single-change, coverage
+pnpm run checks      # the merge-time checks; advisory locally, binding in CI (see below)
+pnpm run check:g4    # is this Story approved? run it before writing any code
 pnpm run test:watch  # TDD loop
 openspec validate <change-id> --strict
 openspec validate --all --strict --no-interactive
 openspec validate --archived        # every archived tasks.md box ticked
 ```
+
+## Working a Story
+
+**Cut the branch at Stage 4**, from `origin/main`, once the Story exists:
+
+```bash
+git fetch origin && git checkout -b story/<issue#>-<change-id> origin/main
+git branch --unset-upstream          # <- do not skip this
+```
+
+`git checkout -b <name> origin/main` sets the new branch's upstream to `origin/main`, so a
+later bare `git push` targets the protected branch and is rejected. Unset it, then push with
+`git push -u origin story/<issue#>-<change-id>`.
+
+Commit the change folder as `docs(<capability>): propose <change-id>` — it is documentation
+until G4. Implementation commits are `feat(<capability>): ...`.
+
+**`pnpm run checks` is staged.** Mid-Story it reports rather than fails: the single-change rule
+reads "still active" until the archive at Stage 8, and scenario coverage reports `2/4 covered —
+next: "<title>"` instead of listing everything missing. That is deliberate — a check that
+demanded all four tests at once would push you into exactly the bulk transcription rule 3
+forbids. In CI the same checks bind, because a PR claims the Story is finished.
+
+**Gate checkboxes** are ticked by whoever can verify the condition. The orchestrator ticks G1
+and G2 boxes when the conditions hold; the implementer ticks DoR and DoD boxes that are
+machine-checkable. The one box no agent may ever tick is the G4 approval — that is the human's
+decision, recorded as a comment, not a checkbox.
+
+**Labels.** Pipeline issues the orchestrator creates carry no triage label: they are already
+triaged by existing. The five triage labels are for inbound or unplanned work only. See
+`docs/agents/triage-labels.md`.
 
 ## This machine
 

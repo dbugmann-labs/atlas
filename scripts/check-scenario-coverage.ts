@@ -15,7 +15,7 @@ import { execFileSync } from 'node:child_process'
 import { mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
-import { currentBranch, deltaCapabilities, fail, locateChange, parseBranch, pass, skip } from './lib/ci.ts'
+import { currentBranch, deltaCapabilities, fail, inCI, locateChange, note, parseBranch, pass, skip } from './lib/ci.ts'
 
 const CHECK = 'scenario coverage'
 const branch = parseBranch(currentBranch())
@@ -63,6 +63,16 @@ try {
 const leafTitles = new Set(listed.map((t) => t.name.split(' > ').at(-1)!))
 const missing = scenarios.filter((s) => !leafTitles.has(s.title))
 
+const covered = scenarios.length - missing.length
+
+// Locally, a part-covered delta is the expected state: hard rule 3 says one scenario per
+// red-green cycle. Failing here would push toward transcribing every scenario at once, which
+// is the horizontal slicing that rule exists to prevent. In CI the change is finished, so it binds.
+if (missing.length > 0 && !inCI) {
+  note(CHECK, `${covered}/${scenarios.length} scenario(s) covered — next: "${missing[0]!.title}"`)
+  process.exit(0)
+}
+
 if (missing.length > 0) {
   fail(CHECK, [
     `${missing.length} of ${scenarios.length} scenario(s) have no test with a matching title:`,
@@ -70,6 +80,7 @@ if (missing.length > 0) {
     ...missing.map((s) => `missing: "${s.title}"\n    from: ${s.source}`),
     '',
     'An acceptance test title must equal its scenario title verbatim.',
+    'Take these one at a time — one scenario per red-green cycle (AGENTS.md rule 3).',
     `Tests seen: ${listed.length}`,
   ])
 }

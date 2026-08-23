@@ -31,15 +31,63 @@ and the PR closes the issue. `docs/graph.mmd` is a read-only projection regenera
 
 ## Conventions
 
-- **Create an issue**: `gh issue create --title "..." --body "..."`. Use a heredoc for multi-line bodies.
+- **Create an issue**: **not** `gh issue create` — it has no `--type` flag in gh 2.83.0, so it
+  silently produces a typeless issue and breaks the three-level model. Use the API:
+
+  ```bash
+  gh api --method POST /repos/dbugmann-labs/atlas/issues \
+    -f title='FEAT: cli-version' \
+    -f body="$(cat <<'EOF'
+  One sentence of intent. Link to the change folder. Gate checkboxes.
+  EOF
+  )" \
+    -f type='Feature' --jq '{number, id}'
+  ```
+
+  Valid `type` values are `Epic`, `Feature`, `Task`, `Bug`. Keep the returned `id` — the next
+  step needs it.
+
+- **Attach a sub-issue**: there is no `gh` verb for this. It is an API call, and the field is
+  the child's **database `id`**, not its issue number — passing the number silently attaches
+  the wrong issue or fails:
+
+  ```bash
+  CHILD_ID=$(gh api /repos/dbugmann-labs/atlas/issues/<child-number> --jq .id)
+  gh api --method POST /repos/dbugmann-labs/atlas/issues/<parent-number>/sub_issues \
+    -F sub_issue_id="$CHILD_ID"
+  ```
+
+  Verify with `gh api /repos/dbugmann-labs/atlas/issues/<parent>/sub_issues --jq '.[].number'`.
+  **Never fake the edge with a "Parent: #3" line in the body** — `docs/graph.mmd` is generated
+  from real sub-issue edges and will not see it.
 - **Read an issue**: `gh issue view <number> --comments`, filtering comments by `jq` and also fetching labels.
 - **List issues**: `gh issue list --state open --json number,title,body,labels,comments --jq '[.[] | {number, title, body, labels: [.labels[].name], comments: [.comments[].body]}]'` with appropriate `--label` and `--state` filters.
 - **Comment on an issue**: `gh issue comment <number> --body "..."`
 - **Apply / remove labels**: `gh issue edit <number> --add-label "..."` / `--remove-label "..."`
 - **Close**: `gh issue close <number> --comment "..."`
 
-The G4 approval gate is a human comment reading `approved` on the Story issue. Read it with
-`gh issue view <number> --comments`; never write it on the human's behalf.
+## The G4 approval marker
+
+G4 is recorded as a comment on the Story issue whose body begins with the exact line:
+
+```
+G4: approved
+```
+
+optionally followed by who authorised it — `G4: approved — authorised by Diego`.
+
+**The decision must be the human's; the keystrokes need not be.** A human who says "approved"
+in conversation may have an agent relay it. What is forbidden is originating the decision: an
+agent must never decide a proposal is fine and record it, and must never write the marker for
+any other reason.
+
+That is why the marker is `G4: approved` and not the bare word. "Approved" appears constantly
+in ordinary prose — an agent writing "still waiting for the approved comment" on the issue
+would forge the gate for any grep-based reader. **Never write the string `G4: approved` on a
+Story issue except as the approval itself.** When discussing the gate, call it "the G4 marker".
+
+Read it with `gh issue view <number> --comments`. `pnpm run check:g4` asserts it, and CI
+check 5 blocks the merge if it is missing.
 
 ## Pull requests as a triage surface
 

@@ -1,8 +1,7 @@
 name: Epic
 description: A large outcome spanning several Features. Requirements do NOT go here.
-title: "<outcome, a few words>"
+title: "EPIC: <noun phrase>"
 type: Epic
-labels: ["needs-triage"]
 body:
   - type: markdown
     attributes:
