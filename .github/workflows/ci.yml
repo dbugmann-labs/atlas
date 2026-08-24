@@ -1,8 +1,9 @@
 # The merge-time check. docs/process.md §7 numbers these 1..6; the step names
 # below carry those numbers so a red run maps onto the written process.
 #
-# Checks 2, 3 and 4 are bespoke scripts in scripts/. They are the most likely
-# part of this system to rot; Phase 4 revisits whether they earned their keep.
+# Checks 2-6 are bespoke scripts in scripts/. They are the most likely part of
+# this system to rot; docs/retrospective.md section 3 scores whether each one has
+# earned its keep, and is the place to record it when one stops doing so.
 name: CI
 
 on:

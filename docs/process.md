@@ -103,7 +103,7 @@ The middle level is honest because a Feature *is* a capability spec. It is not a
 | Archive branch | only if §7's switch-back trigger fires | `archive/add-version-command` |
 | Commit | Conventional Commits | `feat(cli-version): print version from package.json` |
 | PR title | = the squash commit message | same |
-| ADR | `docs/adr/NNNN-kebab-title.md` | `docs/adr/0004-branch-isolation.md` |
+| ADR | `docs/adr/NNNN-kebab-title.md` | `docs/adr/0004-branch-isolation-and-archive.md` |
 | Archive folder | OpenSpec-controlled | `openspec/changes/archive/2026-08-21-add-version-command/` |
 
 ---
@@ -229,7 +229,7 @@ You start with **one concurrent Story**, where two changes cannot possibly race 
 7. `pnpm run verify` — lint, typecheck, test.
 8. `openspec validate --archived` — every `tasks.md` checkbox in the newly archived change is ticked.
 
-Checks 2–6 are bespoke scripts in `scripts/`. They are the most likely part of this system to rot, and Phase 4 revisits whether they earned their keep.
+Checks 2–6 are bespoke scripts in `scripts/`. They are the most likely part of this system to rot. `docs/retrospective.md` §3 scores whether they earned their keep after the first end-to-end Story: none has yet blocked a bad merge, check 3 is now first on the cut list, and check 4 justifies itself by pacing the red-green loop rather than by ever failing.
 
 **Checks 3 and 4 are staged.** Run locally on a Story still in flight they report rather than fail — the single-change rule reads "still active" until the archive at Stage 8, and scenario coverage reports how many scenarios are covered and names the next one. Failing locally would demand every acceptance test at once, which is precisely the bulk transcription §8 forbids. In CI they bind, because a PR asserts the Story is finished.
 
