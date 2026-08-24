@@ -31,7 +31,7 @@ Three systems overlap. Each is authoritative for exactly one thing, and nothing 
 
 This is what removes double bookkeeping. `to-tickets` normally writes acceptance criteria into issue bodies; here it does not — its issue template is overridden in `AGENTS.md` to emit stubs.
 
-**Traceability** is one-way and write-once. The Story issue is created by the agent at Stage 2 with `gh issue create`, titled with the change-id. The branch name embeds both the issue number and the change-id. The PR closes the issue. Nothing syncs back. The dependency graph (`docs/graph.mmd`) is *regenerated read-only* from `gh issue list --json` on demand — it is a projection, never an input.
+**Traceability** is one-way and write-once. The Story issue is created by the agent at Stage 2 via `gh api --method POST .../issues` — not `gh issue create`, which cannot set an issue type — titled with the change-id. The branch name embeds both the issue number and the change-id. The PR closes the issue. Nothing syncs back. The dependency graph (`docs/graph.mmd`) is *regenerated read-only* by `pnpm run graph` on demand — it is a projection, never an input. That generator reads the GraphQL API, because `gh issue list --json` exposes neither the issue type nor the sub-issue edge and so cannot produce the file. See `docs/agents/issue-tracker.md`.
 
 > Rejected alternative: a bidirectional sync script. It is the highest-maintenance component in any setup like this and it fails silently. Write-once creation plus a read-only projection gets ~90% of the value with none of the drift.
 
@@ -52,6 +52,7 @@ atlas/
 │   ├── specs/<capability>/spec.md            # SOURCE OF TRUTH
 │   └── changes/
 │       ├── <change-id>/{proposal.md, specs/, design.md, tasks.md, .openspec.yaml}
+│       │                 # a *complete* change; `openspec new change` writes only .openspec.yaml
 │       └── archive/YYYY-MM-DD-<change-id>/
 ├── docs/
 │   ├── process.md                # this document
