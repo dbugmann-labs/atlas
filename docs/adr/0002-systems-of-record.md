@@ -29,9 +29,12 @@ An issue body carries a one-sentence intent, a link to the change folder, and ga
 checkboxes. It never carries requirements or acceptance criteria. Where an issue and a spec
 disagree, the spec wins and the issue is wrong.
 
-Traceability is one-way and write-once: the Story issue is created once via `gh issue
-create`, the branch name embeds the issue number and change id, and the PR closes the issue.
-`docs/graph.mmd` is a read-only projection regenerated from `gh issue list --json`.
+Traceability is one-way and write-once: the Story issue is created once through the GitHub
+API, the branch name embeds the issue number and change id, and the PR closes the issue.
+`docs/graph.mmd` is a read-only projection, regenerated on demand and never read back.
+
+The exact commands live in `docs/agents/issue-tracker.md`. This ADR fixes the shape of the
+traceability, not the tooling that implements it.
 
 ## Consequences
 
@@ -46,3 +49,14 @@ create`, the branch name embeds the issue number and change id, and the PR close
 **Bidirectional sync between change folders and issues.** Rejected: it is the highest
 maintenance component in a setup like this and it fails silently. Write-once creation plus a
 read-only projection gets most of the value with none of the drift.
+
+## Corrections
+
+- **2026-08-24** — the traceability paragraph named `gh issue create` for Story creation and
+  `gh issue list --json` as the source for `docs/graph.mmd`. Neither command can do what was
+  claimed: `gh issue create` has no `--type` flag as of gh 2.83.0 and so produces a typeless
+  issue, and `gh issue list --json` exposes neither the issue type nor the sub-issue edge.
+  Both were wrong on the day this ADR was accepted, and both were corrected everywhere else
+  before this file. The paragraph now names no command and points at
+  `docs/agents/issue-tracker.md` instead. The decision — one authority per question,
+  write-once traceability, a read-only projection — is unchanged.
