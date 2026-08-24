@@ -65,6 +65,7 @@ One Story = one change = one branch = one PR.
 | Branch | `story/<issue#>-<change-id>`, cut from `origin/main` at Stage 4 |
 | Chore branch | `chore/<slug>` — no behaviour change, no Story needed |
 | Commit | Conventional Commits — `feat(cli-version): print version` |
+| Archive commit | `chore(archive): <change-id>` — scoped `archive`, not the capability |
 | ADR | `docs/adr/NNNN-kebab-title.md` |
 
 ## Agent roles and model routing
@@ -171,7 +172,10 @@ later bare `git push` targets the protected branch and is rejected. Unset it, th
 `git push -u origin story/<issue#>-<change-id>`.
 
 Commit the change folder as `docs(<capability>): propose <change-id>` — it is documentation
-until G4. Implementation commits are `feat(<capability>): ...`.
+until G4. Implementation commits are `feat(<capability>): ...`. The archive at Stage 8 is the
+one commit that breaks the pattern: it is `chore(archive): <change-id>`, scoped `archive`
+rather than the capability, because it moves the change folder and merges the delta rather
+than changing that capability's behaviour. Do not extrapolate `chore(<capability>): ...` here.
 
 **`pnpm run checks` is staged.** Mid-Story it reports rather than fails: the single-change rule
 reads "still active" until the archive at Stage 8, and scenario coverage reports `2/4 covered —
