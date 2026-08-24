@@ -142,17 +142,17 @@ contained in it. That cost decays as the machinery settles, but it is not zero o
 - **An agent that holds `Bash` can write any file**, whatever its `disallowedTools` say.
   `orchestrator`, `reviewer` and `janitor` all need `Bash`.
 - **The graph generator does not paginate** past 100 issues. It throws rather than truncating.
-- **`docs/adr/README.md` forbids editing an accepted ADR except to add a `Superseded by`
-  line.** `ADR-0002` contains two factually wrong command names, written wrong on the day it
-  was accepted. The rule as written offers no way to correct a false statement that is not the
-  decision. Unresolved — see §8.
+- **~~ADRs had no way to correct a false statement.~~ Resolved 2026-08-24.** The rule
+  forbade editing an accepted ADR except to add a `Superseded by` line, so `ADR-0002`'s two
+  wrong command names had no route out. `docs/adr/README.md` now separates the decision, its
+  rationale and its alternatives — still immutable — from incidental detail, which is
+  corrected in place and logged in a dated `## Corrections` section. The test is whether you
+  can write that log line without describing a change of mind; if you cannot, supersede
+  instead. An audit of the other thirteen ADRs found no further stale detail.
 
 ## 8. Open
 
 - **Issue #7** — manifest read failures escape `runCli` as exceptions instead of a `CliResult`.
   The one review finding deferred rather than fixed.
-- **The ADR correction question.** Either `docs/adr/README.md` gains a sentence distinguishing
-  a decision from an incidental detail, or `ADR-0002`'s two wrong command names stay wrong
-  forever. This is a process decision, not a typo fix, so it is left to the human.
 - **Whether any of this holds at three concurrent Stories.** Every judgement above is drawn
   from a sample of one, run by its own author. That is the largest caveat on this document.

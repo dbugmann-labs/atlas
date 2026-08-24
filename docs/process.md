@@ -330,7 +330,7 @@ So "disabled" below means **never invoke**, enforced by `AGENTS.md` and backed b
 
 All fourteen are written; `docs/adr/README.md` is the live index.
 
-ADRs are immutable once accepted. A reversal is a new ADR that supersedes the old one; the old file stays.
+ADRs are immutable once accepted: the decision, its rationale and the alternatives it weighed never change. A reversal is a new ADR that supersedes the old one; the old file stays. Incidental detail that was simply wrong — a command, a version, a path — is corrected in place and logged in a dated `## Corrections` section, so the fix is visible rather than silent. `docs/adr/README.md` carries the rule and the test for which case you are in.
 
 ---
 
