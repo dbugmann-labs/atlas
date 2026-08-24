@@ -8,8 +8,9 @@ Add a term when you catch yourself explaining it twice.
 
 ## Status
 
-**The product is not yet defined.** This file currently holds only process vocabulary. Domain
-terms arrive once product definition begins — see `docs/parking-lot.md`.
+**Product definition began 2026-08-24**, when the development system was signed off. This file
+still holds only process vocabulary; domain terms are added here as they are agreed, one term
+per thing, the moment you catch yourself explaining it twice.
 
 ## Process vocabulary
 

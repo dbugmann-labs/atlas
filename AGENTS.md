@@ -5,9 +5,36 @@ The full reasoning lives in `docs/process.md`; this file is the operative summar
 
 ## What this repo is
 
-Atlas. The product is **not yet defined** — that is deliberate. Until the scaffolding is
-signed off, do not propose features, screens, data models, or a product name. If the user
-volunteers product detail, append it to `docs/parking-lot.md` and carry on.
+Atlas. The development system is **signed off as of 2026-08-24** and the product is now being
+defined. The scaffolding boundary that told earlier agents to refuse product questions has
+lifted; proposing features, data models and names is in scope.
+
+What has not changed is where product detail is allowed to *land*. A feature is real when it
+is a requirement in a capability spec, reached through the pipeline below. Until then it is a
+line in `docs/parking-lot.md`. Never skip from a conversation to code: an idea that has not
+passed G4 has not been agreed, however obvious it seems.
+
+The product's own definition begins upstream of Stage 0 — see `docs/process.md` §4.
+
+## Working with the human
+
+The repo owner works roughly 4–8 hours a week on this and is the only human in the loop. That
+shapes what is useful from you:
+
+- **Challenge the requirement before building it.** Say plainly where something is
+  over-engineered, or where a cheaper thing would do. Being asked twice is not a reason to
+  soften — but once the decision is reaffirmed, it is made, so build it and move on.
+- **Never assume silently.** State every assumption you are working under, and flag the ones
+  that would change the work if wrong.
+- **Work in gated increments.** End each increment at something reviewable. Do not present
+  four merged decisions at once.
+- **Verify, do not remember.** Check the current version, flag, command or API before writing
+  it into a document. This repo has already shipped four documented commands that could never
+  have worked; every one was written from memory. `docs/retrospective.md` §5 is the record.
+- **Report defects, do not route around them.** If a documented step does not work, that is
+  the finding. Say so rather than quietly substituting something that does. This single
+  instruction found fifteen defects in one session that four rounds of re-reading missed.
+- **Prose over bullet walls**, and exact runnable commands over descriptions of commands.
 
 ## The pipeline
 

@@ -1,6 +1,6 @@
 # Atlas — Process Architecture
 
-**Status:** in force. Scaffolding complete; run end to end once, by `add-version-command`.
+**Status:** in force. Scaffolding signed off 2026-08-24; run end to end once, by `add-version-command`.
 **Audience:** any agent or human picking up any issue in this repo, with zero prior context
 **See also:** `README.md` to get started, `docs/retrospective.md` for what this actually cost
 
@@ -109,6 +109,16 @@ The middle level is honest because a Feature *is* a capability spec. It is not a
 ---
 
 ## 4. The lifecycle
+
+### Before Stage 0: where the product comes from
+
+**This lifecycle assumes you already know what you are building.** Stage 0 is *Epic intake* — it receives a body of work, it does not discover one. Product definition sits upstream of it and is deliberately not a numbered stage, because it is a conversation with the human rather than a pipeline with gates.
+
+It has one rule and one artifact. The rule: **an idea is not agreed until it has passed G4 as a requirement in a change folder.** Everything before that is a candidate, however confident anyone sounds. The artifact is `docs/parking-lot.md`, the holding pen between "someone said it" and "it is agreed" — entries land there in one line, and leave in exactly one direction, by being promoted into an Epic or Feature issue and deleted.
+
+`/opsx:explore` and `/grill-with-docs` are the tools for this phase; new domain terms land in `CONTEXT.md` as they are agreed. It ends when there is a body of work you can name in a sentence and a human who agrees that is the next thing to build. That is a Stage 0 Epic.
+
+### The stages
 
 Ten stages, five gates. **Gate** means work stops until a named condition holds. `H` = you sign off, `CI` = machine-checked, `A` = agent-internal.
 
