@@ -23,7 +23,8 @@
     "spec:validate": "openspec validate --all --strict --no-interactive",
     "spec:validate:archived": "openspec validate --archived",
     "check:g4": "node scripts/check-g4-approval.ts",
-    "check:hygiene": "node scripts/check-commit-hygiene.ts"
+    "check:hygiene": "node scripts/check-commit-hygiene.ts",
+    "graph": "node scripts/generate-graph.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -23,8 +23,10 @@ Read `AGENTS.md` first. It is binding.
    `pnpm run checks`, which asserts containment and the single-change rule.
 3. **Merge.** Squash-merge once CI is green. The PR closes its Story issue; the branch deletes
    itself.
-4. **Regenerate `docs/graph.mmd`** from `gh issue list --json`. It is a read-only projection of
-   the sub-issue edges — never hand-maintained.
+4. **Regenerate `docs/graph.mmd`** with `pnpm run graph`, and commit it if it changed. It is a
+   read-only projection of the sub-issue edges — never hand-maintained, and never checked by CI,
+   because issue state moves without any commit. Do not reach for `gh issue list --json`: it
+   carries neither the issue type nor the sub-issue edge, so the generator uses GraphQL.
 
 ## Why you have no file-editing tools
 
