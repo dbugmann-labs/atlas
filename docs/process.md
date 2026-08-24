@@ -1,8 +1,8 @@
 # Atlas — Process Architecture
 
-**Status:** proposed, awaiting Phase 1 sign-off
-**Destination:** `docs/process.md` in `dbugmann-labs/atlas`
+**Status:** in force. Scaffolding complete; run end to end once, by `add-version-command`.
 **Audience:** any agent or human picking up any issue in this repo, with zero prior context
+**See also:** `README.md` to get started, `docs/retrospective.md` for what this actually cost
 
 ---
 
@@ -46,7 +46,7 @@ atlas/
 ├── AGENTS.md                     # the process, written for agents
 ├── CLAUDE.md                     # "@AGENTS.md" + Claude-specific notes
 ├── CONTEXT.md                    # domain vocabulary (Pocock skills read this)
-├── README.md                     # cold-start entry point (Phase 4)
+├── README.md                     # cold-start entry point
 ├── openspec/
 │   ├── config.yaml
 │   ├── specs/<capability>/spec.md            # SOURCE OF TRUTH
@@ -56,6 +56,7 @@ atlas/
 │       └── archive/YYYY-MM-DD-<change-id>/
 ├── docs/
 │   ├── process.md                # this document
+│   ├── retrospective.md          # what the first end-to-end run cost and caught
 │   ├── adr/NNNN-kebab-title.md
 │   ├── agents/{issue-tracker.md, domain.md, triage-labels.md}   # written by setup-matt-pocock-skills
 │   ├── graph.mmd                 # generated, read-only
@@ -356,4 +357,6 @@ What you should not cut, in any version: **G4** and **CI check 2**. Those two ar
 
 The first draft of this document put the archive step in a second PR on `main`, landing after the story PR merged. That is the airtight option and it is what OpenSpec recommends for teams. It was cut because it doubles the PR count to defend against a collision that cannot occur at one concurrent Story and is rare at three. §7 records the trigger for putting it back.
 
-Phase 4 revisits this list against what actually happened during the dry run.
+**It has been revisited.** `docs/retrospective.md` §6 scores this list against the first
+end-to-end Story: the order changed, the two never-cut items did not. Read that before acting
+on the list above.
