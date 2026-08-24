@@ -23,10 +23,17 @@ Read `AGENTS.md` first. It is binding.
    `pnpm run checks`, which asserts containment and the single-change rule.
 3. **Merge.** Squash-merge once CI is green. The PR closes its Story issue; the branch deletes
    itself.
-4. **Regenerate `docs/graph.mmd`** with `pnpm run graph`, and commit it if it changed. It is a
+4. **Settle the parents.** The merge closed the Story. If that was the last open Story under
+   its Feature, close the Feature; if that was the last open Feature under its Epic, close the
+   Epic. `open` means outstanding work at every level, so a parent whose children have all
+   closed is stale state. Check the rollup rather than guessing, and stop if a parent still has
+   open children — settling cascades one level per pass. See
+   `docs/agents/issue-tracker.md` § *Closing the hierarchy*.
+5. **Regenerate `docs/graph.mmd`** with `pnpm run graph`, and commit it if it changed. It is a
    read-only projection of the sub-issue edges — never hand-maintained, and never checked by CI,
    because issue state moves without any commit. Do not reach for `gh issue list --json`: it
-   carries neither the issue type nor the sub-issue edge, so the generator uses GraphQL.
+   carries neither the issue type nor the sub-issue edge, so the generator uses GraphQL. An
+   amber node is a parent that step 4 should have closed.
 
 ## Why you have no file-editing tools
 

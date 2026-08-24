@@ -32,7 +32,8 @@ describe('renderGraph', () => {
 
   it('marks a closed issue done without discarding its level styling', () => {
     expect(renderGraph(TREE)).toContain('  class I5 story,done')
-    expect(renderGraph(TREE)).toContain('  class I4 feature\n')
+    // I3 is the control: open, with an open child, so it carries its level class and nothing else.
+    expect(renderGraph(TREE)).toContain('  class I3 epic\n')
   })
 
   it('is deterministic regardless of the order issues arrive in', () => {
@@ -57,6 +58,30 @@ describe('renderGraph', () => {
     expect(out).toContain('  class I3 epic\n')
     expect(out).toContain('  class I9 feature,orphan')
     expect(out).toContain('  class I11 story,orphan')
+  })
+
+  // `open` has exactly one meaning in this tracker: there is outstanding work here. A parent
+  // whose Stories have all merged is stale state, and the graph is the only place that is
+  // visible without opening each issue — so the rule is drawn rather than remembered.
+  it('marks an open parent whose children have all closed as ready to close', () => {
+    expect(renderGraph(TREE)).toContain('  class I4 feature,settled')
+  })
+
+  it('does not mark a parent settled while any child is still open', () => {
+    const open = [...TREE.slice(0, 2), { ...TREE[2]!, state: 'OPEN' as const }]
+    expect(renderGraph(open)).toContain('  class I4 feature\n')
+  })
+
+  // Settling cascades one level per run: an Epic is only at rest once its Features close,
+  // which cannot happen in the same pass that closes the Stories beneath them.
+  it('does not settle a grandparent whose child is settled but still open', () => {
+    expect(renderGraph(TREE)).toContain('  class I3 epic\n')
+  })
+
+  it('never marks a closed issue settled, and never marks a leaf settled', () => {
+    const out = renderGraph(TREE)
+    expect(out).toContain('  class I5 story,done')
+    expect(out).not.toContain('done,settled')
   })
 
   it('escapes the two characters that would otherwise break the diagram', () => {

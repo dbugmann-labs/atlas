@@ -17,7 +17,9 @@ terms arrive once product definition begins — see `docs/parking-lot.md`.
 no anchor on disk; pure coordination.
 
 **Feature** — one capability. A GitHub issue of type `Feature`, corresponding one-to-one with
-`openspec/specs/<capability>/spec.md`. Lives forever.
+`openspec/specs/<capability>/spec.md`. The **spec** lives forever; the **issue** closes when no
+open Story remains under it and reopens when a new one is cut, so that `open` keeps one meaning
+across all three levels. See `docs/agents/issue-tracker.md` § *Closing the hierarchy*.
 
 **Story** — one unit of implementable work. A GitHub issue of type `Task`, corresponding
 one-to-one with an OpenSpec change, a branch and a pull request. Archived when done.

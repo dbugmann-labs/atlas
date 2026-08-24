@@ -1,13 +1,15 @@
 %% GENERATED FILE — do not edit. Run `pnpm run graph` to refresh.
 %% A read-only projection of the Epic → Feature → Story hierarchy in GitHub Issues.
 %% GitHub owns this state; this file only shows it (docs/adr/0002-systems-of-record.md).
-%% A dashed red border means the issue is typed but has no parent — a broken tracker edge.
+%% Green border: closed. Amber border: every child is closed, so this one is ready to close.
+%% Dashed red border: typed but no parent — a broken tracker edge.
 
 flowchart TD
   classDef epic fill:#dbeafe,stroke:#1d4ed8,color:#0b1220
   classDef feature fill:#e0f2fe,stroke:#0369a1,color:#0b1220
   classDef story fill:#f1f5f9,stroke:#475569,color:#0b1220
   classDef done stroke:#15803d,stroke-width:2px
+  classDef settled stroke:#b45309,stroke-width:2px
   classDef orphan stroke:#b91c1c,stroke-width:3px,stroke-dasharray:4 3
 
   I3["Epic 3 — Command-line surface"]
@@ -17,6 +19,6 @@ flowchart TD
   I3 --> I4
   I4 --> I5
 
-  class I3 epic
-  class I4 feature
+  class I3 epic,done
+  class I4 feature,done
   class I5 story,done
