@@ -2,13 +2,12 @@
 
 A development system: the specs, gates, agents and checks that produce software here.
 
-**The product is not yet defined.** That is deliberate, not an omission. What exists is the
-machinery — how work is decomposed, how a requirement becomes a test, what a human must
-approve, and what a machine refuses to merge. `src/` holds one 48-line command-line entry
-point that exists only to prove the pipeline runs end to end.
+The development system was signed off on **2026-08-24** and the product is now being defined.
+What exists today is the machinery — how work is decomposed, how a requirement becomes a test,
+what a human must approve, and what a machine refuses to merge. `src/` holds one 48-line
+command-line entry point that exists only to prove the pipeline runs end to end.
 
-If you have arrived to build a feature, there is nothing to build against yet. If you have
-arrived to work an issue, read on.
+So there is not yet much to build *against*. There is a well-defined way to build. Read on.
 
 ## The whole process in one paragraph
 

@@ -2,12 +2,13 @@
 
 Product ideas captured during scaffolding, deliberately **not acted on**.
 
-The product is undefined on purpose until the development system is signed off. When product
-detail surfaces in conversation, it lands here in one line and the conversation moves on. No
-feature is designed, no data model is drawn, and nothing here influences the scaffolding.
+**Live as of 2026-08-24**, when the development system was signed off and product definition
+began. This is now the holding pen between "someone said it" and "it is agreed": an idea lands
+here in one line and the conversation moves on, rather than becoming code by momentum.
 
-When product definition begins, this file is the input to the first `/opsx:explore` session.
-Entries are then promoted into Epics and deleted from here.
+An entry leaves this file in exactly one direction — promoted into an Epic or Feature issue,
+then deleted from here. Nothing is implemented from this file. An entry that has sat here
+through two rounds of Epic intake is telling you something; either promote it or delete it.
 
 ## Entries
 
