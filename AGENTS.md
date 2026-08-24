@@ -189,6 +189,12 @@ and G2 boxes when the conditions hold; the implementer ticks DoR and DoD boxes t
 machine-checkable. The one box no agent may ever tick is the G4 approval — that is the human's
 decision, recorded as a comment, not a checkbox.
 
+**Closing.** `open` means one thing at every level: there is outstanding work under this node.
+A Story closes with its PR. A Feature closes when no open Story remains under it, and reopens
+when a new one is cut — what lives forever is the capability spec, not the issue. An Epic
+closes when its Features do. `docs/graph.mmd` draws a parent that is ready to close in amber.
+See `docs/agents/issue-tracker.md` § *Closing the hierarchy*.
+
 **Labels.** Pipeline issues the orchestrator creates carry no triage label: they are already
 triaged by existing. The five triage labels are for inbound or unplanned work only. See
 `docs/agents/triage-labels.md`.

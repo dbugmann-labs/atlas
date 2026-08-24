@@ -24,7 +24,7 @@ Three systems overlap. Each is authoritative for exactly one thing, and nothing 
 | What will this change do to that? | `openspec/changes/<change-id>/specs/**` (delta) | repo | until archive |
 | Why did we choose this? | `docs/adr/NNNN-*.md` | repo | forever |
 | What do our words mean? | `CONTEXT.md` | repo | forever |
-| What is being worked on, in what order, blocked by what? | GitHub Issues + Project | GitHub | until closed |
+| What is being worked on, in what order, blocked by what? | GitHub Issues | GitHub | until closed |
 | What steps remain inside this change? | `openspec/changes/<change-id>/tasks.md` | repo | until archive |
 
 **The rule: the repo owns content, GitHub owns state.** An issue body never contains requirements, acceptance criteria, or design. It contains a one-sentence intent, a link to the change folder, and checkboxes for the process gates. If an issue and a spec disagree, the spec wins and the issue is wrong.
@@ -79,7 +79,7 @@ OpenSpec has exactly one unit of work — the *change* — and no hierarchy at a
 | Level | GitHub | Anchor on disk | Cardinality | Lifetime |
 |---|---|---|---|---|
 | **Epic** | issue, type `Epic` | none — pure coordination | 1 Epic : many Features | weeks–months |
-| **Feature** | issue, type `Feature` | `openspec/specs/<capability>/spec.md` | 1 Feature : 1 capability | forever |
+| **Feature** | issue, type `Feature` | `openspec/specs/<capability>/spec.md` | 1 Feature : 1 capability | the spec forever; the issue closes and reopens |
 | **Story** | issue, type `Task` | `openspec/changes/<change-id>/` | 1 Story : 1 change : 1 branch : 1 PR | days |
 
 The middle level is honest because a Feature *is* a capability spec. It is not a ceremony layer; it is a file.
@@ -123,7 +123,7 @@ Ten stages, five gates. **Gate** means work stops until a named condition holds.
 | 6 | Green + next | `/opsx:apply` driving `/tdd` | `implementer` / Sonnet | one scenario per cycle until the delta is satisfied | A |
 | 7 | Review | `/code-review` | `reviewer` / Opus | findings, two-axis: standards + spec fidelity | **G7 (H)** |
 | 8 | Archive | `/opsx:archive` on the same branch | `janitor` / Haiku | delta merged into `openspec/specs/`, change moved to `changes/archive/`, PR marked ready | — |
-| 9 | Merge | squash-merge | `janitor` / Haiku | issue auto-closed, `docs/graph.mmd` regenerated | **G8 (CI)** |
+| 9 | Merge | squash-merge | `janitor` / Haiku | issue auto-closed, parents settled, `docs/graph.mmd` regenerated | **G8 (CI)** |
 
 ### The gates, precisely
 
@@ -278,7 +278,8 @@ The seam is agreed *before* any test is written, per the `tdd` skill — the few
 - [ ] ADR written if a decision was hard, reversible-with-pain, or surprising
 - [ ] `/opsx:archive` run as the last commit on the branch: `openspec/specs/` updated, change under `changes/archive/`, every `tasks.md` box ticked
 - [ ] PR squash-merged into `main`; issue auto-closed
-- [ ] `docs/graph.mmd` regenerated
+- [ ] Parents settled: the Feature closed if no open Story remains under it, and its Epic if no open Feature remains under that
+- [ ] `docs/graph.mmd` regenerated, with no amber node left standing
 
 ---
 

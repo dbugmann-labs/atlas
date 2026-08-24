@@ -68,7 +68,8 @@ export function renderGraph(issues: GraphIssue[]): string {
     '%% GENERATED FILE — do not edit. Run `pnpm run graph` to refresh.',
     '%% A read-only projection of the Epic → Feature → Story hierarchy in GitHub Issues.',
     '%% GitHub owns this state; this file only shows it (docs/adr/0002-systems-of-record.md).',
-    '%% A dashed red border means the issue is typed but has no parent — a broken tracker edge.',
+    '%% Green border: closed. Amber border: every child is closed, so this one is ready to close.',
+    '%% Dashed red border: typed but no parent — a broken tracker edge.',
     '',
   ]
 
@@ -88,6 +89,7 @@ export function renderGraph(issues: GraphIssue[]): string {
     '  classDef feature fill:#e0f2fe,stroke:#0369a1,color:#0b1220',
     '  classDef story fill:#f1f5f9,stroke:#475569,color:#0b1220',
     '  classDef done stroke:#15803d,stroke-width:2px',
+    '  classDef settled stroke:#b45309,stroke-width:2px',
     '  classDef orphan stroke:#b91c1c,stroke-width:3px,stroke-dasharray:4 3',
     '',
   )
@@ -105,10 +107,23 @@ export function renderGraph(issues: GraphIssue[]): string {
 
   if (edges.length > 0) lines.push('', ...edges)
 
+  // A parent is at rest once every Story beneath it has merged. `open` has one meaning in this
+  // tracker — there is outstanding work here — so a parent whose children are all closed is
+  // stale state, not a live node. See docs/agents/issue-tracker.md § Closing the hierarchy.
+  const children = new Map<number, GraphIssue[]>()
+  for (const issue of nodes) {
+    if (issue.parent === null || !present.has(issue.parent)) continue
+    const siblings = children.get(issue.parent) ?? []
+    siblings.push(issue)
+    children.set(issue.parent, siblings)
+  }
+
   lines.push('')
   for (const issue of nodes) {
     const classes = [LEVELS.get(issue.type!)!.css]
+    const mine = children.get(issue.number) ?? []
     if (issue.state === 'CLOSED') classes.push('done')
+    else if (mine.length > 0 && mine.every((c) => c.state === 'CLOSED')) classes.push('settled')
     // An Epic is a root by definition; a Feature or Story without a reachable parent is not.
     if (issue.type !== 'Epic' && (issue.parent === null || !present.has(issue.parent))) {
       classes.push('orphan')

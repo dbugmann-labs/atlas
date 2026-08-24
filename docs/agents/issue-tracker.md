@@ -66,6 +66,47 @@ and the PR closes the issue. `docs/graph.mmd` is a read-only projection regenera
 - **Apply / remove labels**: `gh issue edit <number> --add-label "..."` / `--remove-label "..."`
 - **Close**: `gh issue close <number> --comment "..."`
 
+## Closing the hierarchy
+
+**`open` has exactly one meaning in this tracker: there is outstanding work under this node.**
+It has to, because `ADR-0012` dropped the project board and left open/closed as the primary
+state signal. If `open` meant "work outstanding" on a Story and "this capability exists" on a
+Feature, the one signal that survived would carry two meanings and stop answering *where is
+everything*.
+
+| Level | Close when | Reopen when |
+|---|---|---|
+| Story | its PR merges — automatic, nothing to do | never; new work is a new Story |
+| Feature | no open Story under it, and none queued | a new Story is cut against that capability |
+| Epic | every Feature under it is closed | any child Feature reopens |
+
+**A Feature is not "forever" because its issue stays open.** What lives forever is
+`openspec/specs/<capability>/spec.md`. The issue tracks work against that spec, and reopening
+it is free — `gh issue reopen <number>` — which is what keeps one Feature issue matched to one
+capability spec instead of accumulating a second one each time the capability is revisited.
+
+**Settling cascades one level per pass.** Closing the last Story makes its Feature ready to
+close; closing that Feature makes its Epic ready. Do not try to close a whole branch of the
+tree in one step — check the rollup after each close:
+
+```bash
+gh api /repos/dbugmann-labs/atlas/issues/<n>/sub_issues \
+  --jq '.[] | "#\(.number) \(.title) state=\(.state)"'
+```
+
+Every child `closed` means the parent is ready. **Read the children, not the parent's
+`sub_issues_summary`** — that rollup is eventually consistent and was observed still reading
+`0/1` immediately after the child closed, correcting to `1/1` moments later. It is fine for a
+glance and wrong for a decision made in the same breath as the close.
+
+`docs/graph.mmd` draws a ready-to-close parent with an amber border, so the whole tree can be
+checked at once instead of one issue at a time. The generator derives this from each issue's
+own state rather than from the rollup, so it does not lag.
+
+**A triaged bug is not outstanding work for this purpose.** An issue carrying `needs-triage`
+and no issue type sits outside the hierarchy by design — it is inbox, not plan. It does not
+hold its capability's Feature open. When it is promoted to a Story, reopen the Feature then.
+
 ## The G4 approval marker
 
 G4 is recorded as a comment on the Story issue whose body begins with the exact line:
