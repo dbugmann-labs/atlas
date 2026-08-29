@@ -39,6 +39,32 @@ git history, so process fixes made in Atlas can later be merged downstream — a
 starts with no common ancestor to merge from, and a fork's commits do not count toward the
 contribution graph.
 
+**A push carries files and history, and nothing else.** Branch protection, merge settings and
+labels do not travel, so the new repository starts with `main` unprotected — which silently
+removes G8, the only gate between a finished Story and `main`. Restore them:
+
+```bash
+REPO=<owner>/<project>
+gh api --method PATCH /repos/$REPO -F allow_merge_commit=false -F allow_rebase_merge=false \
+  -F allow_squash_merge=true -F delete_branch_on_merge=true
+gh api --method POST /repos/$REPO/rulesets --input - <<'JSON'
+{ "name": "main", "target": "branch", "enforcement": "active", "bypass_actors": [],
+  "conditions": { "ref_name": { "include": ["~DEFAULT_BRANCH"], "exclude": [] } },
+  "rules": [ { "type": "deletion" }, { "type": "non_fast_forward" },
+    { "type": "required_linear_history" },
+    { "type": "pull_request", "parameters": { "allowed_merge_methods": ["squash"],
+        "dismiss_stale_reviews_on_push": false, "require_code_owner_review": false,
+        "require_last_push_approval": false, "required_approving_review_count": 0,
+        "required_review_thread_resolution": false } },
+    { "type": "required_status_checks", "parameters": { "do_not_enforce_on_create": false,
+        "strict_required_status_checks_policy": true,
+        "required_status_checks": [ { "context": "verify" } ] } } ] }
+JSON
+```
+
+The five triage labels in `docs/agents/triage-labels.md` do not travel either; create them with
+`gh label create` before the first inbound issue arrives.
+
 Later, `git fetch upstream && git merge upstream/main` brings those process fixes down; that
 stays cheap only if process files are edited in Atlas rather than in the project.
 
