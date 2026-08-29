@@ -1,6 +1,6 @@
 # Parking lot
 
-Product ideas captured during scaffolding, deliberately **not acted on**.
+Product ideas, deliberately **not acted on**.
 
 **A template's parking lot starts empty**, and this one is. It is the holding pen between
 "someone said it" and "it is agreed": an idea lands here in one line and the conversation moves
