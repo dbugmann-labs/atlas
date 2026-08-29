@@ -116,6 +116,8 @@ The middle level is honest because a Feature *is* a capability spec. It is not a
 
 It has one rule and one artifact. The rule: **an idea is not agreed until it has passed G4 as a requirement in a change folder.** Everything before that is a candidate, however confident anyone sounds. The artifact is `docs/parking-lot.md`, the holding pen between "someone said it" and "it is agreed" — entries land there in one line, and leave in exactly one direction, by being promoted into an Epic or Feature issue and deleted.
 
+Promotion deletes an entry only when the issue can actually carry it. Issues hold no requirements (rule 4), so an Epic absorbs a one-line idea but not concrete detail — the eight commitments and their rhythms that produced `EPIC: Daily commitments`, for instance. Detail like that stays parked until a change folder exists to receive it, and is deleted when the spec that supersedes it is archived. An entry outliving its Epic is expected; an entry outliving the spec that covers it is stale.
+
 `/opsx:explore` and `/grill-with-docs` are the tools for this phase; new domain terms land in `CONTEXT.md` as they are agreed. It ends when there is a body of work you can name in a sentence and a human who agrees that is the next thing to build. That is a Stage 0 Epic.
 
 ### The stages
