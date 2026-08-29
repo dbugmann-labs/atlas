@@ -55,4 +55,14 @@ that Epic's scope or still an open question inside it. Nothing here is agreed.
   makes a late tick shift everything after it, which is a different mechanism from the calendar rules
 - whether "every day" is a set of seven weekdays or an interval of one — two rules can express it
 - supplements and habits were named as one line; a habit phrased as a negative is not a supplement
-- has not been checked against what already exists; the consolidated small app may already be shipping
+- checked against what already exists on 2026-08-29. Nothing found does all four rule shapes without
+  streak mechanics. Apple Reminders does weekdays, every N days and a day of the month — free and
+  already installed — but has no weekly quota and keeps no history of what was ticked. The habit-tracker
+  category (Streaks, HabitKit, Habitify, Do Habits) has the quota and is built on streaks, the thing the
+  owner abandoned apps for; a specific calendar date is the shape it lacks, not the quota.
+- a past tick is looked at again — answered 2026-08-29. This disqualifies Apple Reminders on its own
+  terms: it nags and forgets, and the failure being solved is a gap a few days old that cannot be
+  reconstructed. The tick record is therefore durable, not transient.
+- still open: whether looking back means navigating to a past day, or a view that aggregates a
+  commitment over time ("eleven gym sessions last month"). The first is already implied by ticking any
+  day; the second is a surface nobody has agreed to build.
