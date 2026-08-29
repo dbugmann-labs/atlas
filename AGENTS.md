@@ -5,14 +5,15 @@ The full reasoning lives in `docs/process.md`; this file is the operative summar
 
 ## What this repo is
 
-Atlas. The development system is **signed off as of 2026-08-24** and the product is now being
-defined. The scaffolding boundary that told earlier agents to refuse product questions has
-lifted; proposing features, data models and names is in scope.
+Atlas. It is a development system, and it is the template a project is started from. This
+repo itself has no product: the one command-line entry point in `src/` exists only to prove
+the pipeline runs end to end. A project starts by copying this repository — see the README —
+and its product definition happens there, not here.
 
-What has not changed is where product detail is allowed to *land*. A feature is real when it
-is a requirement in a capability spec, reached through the pipeline below. Until then it is a
-line in `docs/parking-lot.md`. Never skip from a conversation to code: an idea that has not
-passed G4 has not been agreed, however obvious it seems.
+What travels with the copy is where product detail is allowed to *land*. A feature is real
+when it is a requirement in a capability spec, reached through the pipeline below. Until then
+it is a line in `docs/parking-lot.md`. Never skip from a conversation to code: an idea that
+has not passed G4 has not been agreed, however obvious it seems.
 
 The product's own definition begins upstream of Stage 0 — see `docs/process.md` §4.
 

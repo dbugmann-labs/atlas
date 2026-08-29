@@ -2,12 +2,13 @@
 
 A development system: the specs, gates, agents and checks that produce software here.
 
-The development system was signed off on **2026-08-24** and the product is now being defined.
-What exists today is the machinery — how work is decomposed, how a requirement becomes a test,
-what a human must approve, and what a machine refuses to merge. `src/` holds one 48-line
-command-line entry point that exists only to prove the pipeline runs end to end.
+What is here is the machinery — how work is decomposed, how a requirement becomes a test, what
+a human must approve, and what a machine refuses to merge. It holds no product of its own,
+because it is meant to be copied: Atlas is the template a project starts from, and the product
+is defined in the copy. `src/` holds one 48-line command-line entry point, a deliberate worked
+example that proves the pipeline runs end to end.
 
-So there is not yet much to build *against*. There is a well-defined way to build. Read on.
+So there is nothing here to build *against*. There is a well-defined way to build. Read on.
 
 ## The whole process in one paragraph
 
@@ -22,6 +23,24 @@ spec edit that the archived delta does not claim. The repo is authoritative for 
 GitHub is authoritative for *state and order*; nothing is written down twice.
 
 If you can say that paragraph from memory, you know the process.
+
+## Starting a project from this
+
+```bash
+gh repo create <owner>/<project> --public
+git clone https://github.com/<owner>/atlas.git <project> && cd <project>
+git remote set-url origin https://github.com/<owner>/<project>.git
+git push -u origin main
+git remote add upstream https://github.com/<owner>/atlas.git
+```
+
+Cloning rather than using GitHub's *Use this template* button or a fork preserves the shared
+git history, so process fixes made in Atlas can later be merged downstream — a template copy
+starts with no common ancestor to merge from, and a fork's commits do not count toward the
+contribution graph.
+
+Later, `git fetch upstream && git merge upstream/main` brings those process fixes down; that
+stays cheap only if process files are edited in Atlas rather than in the project.
 
 ## Start here
 

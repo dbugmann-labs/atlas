@@ -8,10 +8,9 @@ Add a term when you catch yourself explaining it twice.
 
 ## Status
 
-**Product definition began 2026-08-24**, when the development system was signed off. The first
-domain terms were agreed on 2026-08-28 with `EPIC: Daily commitments` (#17) and are below.
-Terms are added as they are agreed, one term per thing, the moment you catch yourself
-explaining it twice.
+This file ships holding only process vocabulary. Atlas is a template and has no product, so it
+carries no domain terms of its own. A project started from this template adds its domain terms
+here as they are agreed, one term per thing, the moment you catch yourself explaining it twice.
 
 ## Process vocabulary
 
@@ -41,24 +40,3 @@ exactly one acceptance test of the same name. See `docs/adr/0005-scenarios-drive
 before any test is written.
 
 **G4** — the spec-approval gate. Nothing is implemented before it. See `docs/process.md`.
-
-## Domain vocabulary
-
-**Commitment** — something you have decided you owe yourself on a recurring rhythm: the gym,
-the monthly finances, watering the plants. It is defined once and recurs indefinitely. It is
-deliberately not a *task*, which is completed once and then gone; not a *habit*, which fits
-supplements but not finances; and not an *area*, a word tried first and dropped because it was
-covering three unlike behaviours at once.
-
-**Schedule** — the rule attached to a commitment that decides which days it is due on. Four
-shapes are known to be needed: a set of weekdays, every N days, a day of the month, and N
-times within a week on any days.
-
-**Due** — a commitment is due on a day when that day's date satisfies its schedule. Whether a
-commitment is due is a question asked *of a date*, not of the present moment.
-
-**Tick** — to record that a due commitment was done. The past is writable: a day other than
-today can be ticked.
-
-**Day** — the unit the product is organised around. The landing screen is one day, and every
-record is keyed to a date rather than to the time it was entered.
