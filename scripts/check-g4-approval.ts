@@ -15,7 +15,7 @@
  * red build.
  */
 import { execFileSync } from 'node:child_process'
-import { currentBranch, fail, parseBranch, pass, skip } from './lib/ci.ts'
+import { currentBranch, fail, parseBranch, pass, repoSlug, skip } from './lib/ci.ts'
 
 const CHECK = 'G4 approval recorded'
 const MARKER = /^G4: approved\b/m
@@ -26,7 +26,7 @@ if (branch.kind !== 'story') {
   process.exit(0)
 }
 
-const repo = process.env['GITHUB_REPOSITORY'] ?? 'dbugmann-labs/atlas'
+const repo = repoSlug()
 let comments: { body: string; user: { login: string }; created_at: string }[]
 try {
   const raw = execFileSync(

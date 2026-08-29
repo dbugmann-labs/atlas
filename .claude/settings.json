@@ -5,8 +5,11 @@
   "permissions": {
     "deny": [
       "Edit(/openspec/specs/**)",
+      "Write(/openspec/specs/**)",
       "Edit(/openspec/changes/archive/**)",
-      "Edit(/pnpm-lock.yaml)"
+      "Write(/openspec/changes/archive/**)",
+      "Edit(/pnpm-lock.yaml)",
+      "Write(/pnpm-lock.yaml)"
     ]
   }
 }
