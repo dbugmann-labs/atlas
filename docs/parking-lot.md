@@ -60,5 +60,9 @@ that Epic's scope or still an open question inside it. Nothing here is agreed.
   already installed — but has no weekly quota and keeps no history of what was ticked. The habit-tracker
   category (Streaks, HabitKit, Habitify, Do Habits) has the quota and is built on streaks, the thing the
   owner abandoned apps for; a specific calendar date is the shape it lacks, not the quota.
-- undecided, and it decides whether Reminders is already enough: is a past tick ever looked at again,
-  or does ticking only serve making today complete?
+- a past tick is looked at again — answered 2026-08-29. This disqualifies Apple Reminders on its own
+  terms: it nags and forgets, and the failure being solved is a gap a few days old that cannot be
+  reconstructed. The tick record is therefore durable, not transient.
+- still open: whether looking back means navigating to a past day, or a view that aggregates a
+  commitment over time ("eleven gym sessions last month"). The first is already implied by ticking any
+  day; the second is a surface nobody has agreed to build.
