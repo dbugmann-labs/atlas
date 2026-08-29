@@ -25,6 +25,32 @@ export function git(args: string[]): string {
  * On a pull_request event HEAD is a detached merge commit, so the branch name
  * has to come from the environment. Locally it comes from git.
  */
+/**
+ * Pull `owner/repo` out of an origin remote URL, in either the SSH or HTTPS form.
+ * Split from `repoSlug` so the parsing is testable without a git remote.
+ */
+export function parseRepoSlug(remoteUrl: string): string | null {
+  const match = /[:/]([^/:]+\/[^/]+?)(?:\.git)?$/.exec(remoteUrl.trim())
+  const slug = match?.[1]
+  return slug === undefined ? null : slug
+}
+
+/**
+ * The `owner/repo` these checks run against. GitHub Actions sets
+ * GITHUB_REPOSITORY; locally it comes from the origin remote rather than a
+ * constant, so a repository created from this one checks itself instead of
+ * silently checking its ancestor.
+ */
+export function repoSlug(): string {
+  const fromEnv = process.env['GITHUB_REPOSITORY']
+  if (fromEnv !== undefined && fromEnv !== '') return fromEnv
+  const slug = parseRepoSlug(git(['remote', 'get-url', 'origin']))
+  if (slug === null) {
+    throw new Error('Cannot derive owner/repo from the origin remote; set GITHUB_REPOSITORY.')
+  }
+  return slug
+}
+
 export function currentBranch(): string {
   const fromEnv = process.env['GITHUB_HEAD_REF']
   if (fromEnv) return fromEnv

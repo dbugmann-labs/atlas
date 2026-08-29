@@ -18,6 +18,8 @@
 import { execFileSync } from 'node:child_process'
 import { writeFileSync } from 'node:fs'
 
+import { repoSlug } from './lib/ci.ts'
+
 export type GraphIssue = {
   number: number
   title: string
@@ -179,7 +181,7 @@ export function fetchIssues(repo: string): GraphIssue[] {
 }
 
 if (import.meta.filename === process.argv[1]) {
-  const repo = process.env['GITHUB_REPOSITORY'] ?? 'dbugmann-labs/atlas'
+  const repo = repoSlug()
   const issues = fetchIssues(repo)
   const out = new URL('../docs/graph.mmd', import.meta.url)
   writeFileSync(out, renderGraph(issues), 'utf8')
