@@ -1,0 +1,660 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{color-scheme:light dark}body{margin:0}img{max-width:100%}</style></head><body>
+<title>Ten Stages, Five Gates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --paper:#E6E9EC;
+  --surface:#F2F4F6;
+  --sunk:#DCE0E4;
+  --ink:#131A20;
+  --muted:#5D686F;
+  --rule:#C0C7CD;
+  --rule-soft:#D2D8DD;
+  --signal:#AF3527;
+  --signal-wash:#F0DCD8;
+  --machine:#2A6459;
+  --machine-wash:#D7E5E1;
+  --amber:#8A5A0C;
+  --sans:'Archivo',ui-sans-serif,system-ui,sans-serif;
+  --serif:'Newsreader',Georgia,'Times New Roman',serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0D1317;
+    --surface:#161F25;
+    --sunk:#0A1013;
+    --ink:#DCE4E9;
+    --muted:#8B979F;
+    --rule:#2B3941;
+    --rule-soft:#212D34;
+    --signal:#DE7160;
+    --signal-wash:#2C1A17;
+    --machine:#5FB09E;
+    --machine-wash:#12241F;
+  --amber:#D9A441;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0D1317;
+  --surface:#161F25;
+  --sunk:#0A1013;
+  --ink:#DCE4E9;
+  --muted:#8B979F;
+  --rule:#2B3941;
+  --rule-soft:#212D34;
+  --signal:#DE7160;
+  --signal-wash:#2C1A17;
+  --machine:#5FB09E;
+  --machine-wash:#12241F;
+  --amber:#D9A441;
+}
+
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:56px 28px 96px;display:flex;flex-direction:column;gap:64px}
+
+/* ---- masthead ---- */
+.mast{display:flex;flex-direction:column;gap:20px;border-bottom:2px solid var(--ink);padding-bottom:28px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--sans);font-weight:700;font-size:clamp(2.6rem,7vw,4.6rem);line-height:.94;letter-spacing:-.028em;text-wrap:balance;margin:0}
+h1 em{font-style:normal;color:var(--signal)}
+.thesis{max-width:62ch;font-size:1.12rem;color:var(--ink)}
+.thesis strong{font-weight:500;box-shadow:inset 0 -.45em 0 var(--signal-wash)}
+
+/* ---- sections ---- */
+section{display:flex;flex-direction:column;gap:22px}
+h2{font-family:var(--sans);font-weight:600;font-size:1.55rem;letter-spacing:-.015em;margin:0;text-wrap:balance;display:flex;align-items:baseline;gap:14px}
+h2::before{content:"";flex:0 0 26px;height:2px;background:var(--signal);transform:translateY(-.32em)}
+h3{font-family:var(--sans);font-weight:600;font-size:1.02rem;letter-spacing:-.005em;margin:0}
+.lede{max-width:66ch;color:var(--muted);margin:0}
+p{margin:0;max-width:68ch}
+code{font-family:var(--mono);font-size:.855em;background:var(--sunk);padding:.1em .34em;border-radius:3px}
+
+/* ---- figures ---- */
+figure{margin:0;display:flex;flex-direction:column;gap:12px}
+.scroll{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:5px;padding:22px 20px}
+.dia{display:block;width:100%;height:auto;color:var(--ink)}
+.dia text{font-family:var(--sans);fill:currentColor;font-size:11.5px}
+.dia .mono{font-family:var(--mono);font-size:10.5px}
+.dia .cap{font-size:9.5px;letter-spacing:.11em}
+.dia .num{font-family:var(--mono);font-size:10.5px;font-weight:500}
+.dia .hd{font-family:var(--sans);font-size:12px;font-weight:600}
+.f-sig{fill:var(--signal)}.s-sig{stroke:var(--signal)}
+.f-mac{fill:var(--machine)}.s-mac{stroke:var(--machine)}
+.f-amb{fill:var(--amber)}.s-amb{stroke:var(--amber)}
+.f-mut{fill:var(--muted)}.s-mut{stroke:var(--muted)}
+.f-pap{fill:var(--surface)}
+.f-none{fill:none}
+.s-ink{stroke:currentColor}
+.box{fill:var(--surface);stroke:var(--rule);stroke-width:1}
+.sunkbox{fill:var(--sunk);stroke:var(--rule);stroke-width:1}
+figcaption{font-size:.9rem;color:var(--muted);max-width:74ch}
+figcaption b{color:var(--ink);font-weight:500}
+
+/* ---- stage ladder ---- */
+.ladder{display:flex;flex-direction:column;gap:2px}
+.stage{display:grid;grid-template-columns:34px minmax(140px,1.05fr) minmax(150px,1.2fr) 150px minmax(180px,1.5fr);gap:16px;align-items:baseline;padding:13px 14px;background:var(--surface);border-left:2px solid var(--rule)}
+.stage .n{font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.stage .nm{font-family:var(--sans);font-weight:600;font-size:1rem;letter-spacing:-.01em}
+.stage .dr,.stage .ou{font-size:.9rem;color:var(--muted)}
+.stage .ou{color:var(--ink)}
+.stage code{background:var(--sunk);font-size:.78rem}
+.who{font-family:var(--mono);font-size:10.5px;letter-spacing:.02em;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.who .dot{width:7px;height:7px;border-radius:50%;flex:none}
+.op{background:var(--signal)}.so{background:var(--machine)}.ha{background:var(--muted)}
+
+.gate{display:grid;grid-template-columns:34px 1fr auto;gap:16px;align-items:start;padding:15px 14px;background:var(--signal-wash);border-left:2px solid var(--signal)}
+.gate.ci{background:var(--machine-wash);border-left-color:var(--machine)}
+.gate .g{font-family:var(--sans);font-weight:700;font-size:12.5px;color:var(--signal);letter-spacing:.02em}
+.gate.ci .g{color:var(--machine)}
+.gate .gt{display:flex;flex-direction:column;gap:6px}
+.gate .gh{font-family:var(--sans);font-weight:600;font-size:1rem}
+.gate ul{margin:0;padding-left:1.05em;font-size:.9rem;display:flex;flex-direction:column;gap:3px}
+.gate p{font-size:.9rem}
+.chip{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
+.chip.h{color:var(--signal)}
+.chip.m{color:var(--machine)}
+.chip.a{color:var(--muted)}
+
+/* ---- checks ---- */
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2px}
+.check{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:5px;border-top:2px solid var(--rule)}
+.check.key{border-top-color:var(--signal)}
+.check .ci{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.check .cn{font-family:var(--sans);font-weight:600;font-size:.96rem}
+.check .cd{font-size:.88rem;color:var(--muted)}
+.check .cd code{font-size:.8rem}
+.tag{align-self:flex-start;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--machine);border:1px solid currentColor;border-radius:99px;padding:2px 7px;margin-top:2px}
+
+/* ---- enforcement ---- */
+.enf{display:flex;flex-direction:column;gap:2px}
+.enf .row{display:grid;grid-template-columns:minmax(200px,1fr) minmax(240px,1.6fr) 128px;gap:16px;padding:13px 14px;background:var(--surface);align-items:baseline}
+.enf.close .row{grid-template-columns:110px 1fr 1fr}
+.enf .row.hd{background:transparent;padding-bottom:4px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.enf .l{font-family:var(--mono);font-size:.82rem;line-height:1.45}
+.enf .w{font-size:.9rem;color:var(--muted)}
+.enf .s{font-family:var(--sans);font-weight:600;font-size:.82rem;letter-spacing:.02em}
+.hard{color:var(--machine)}
+.soft{color:var(--signal)}
+
+/* ---- hatches ---- */
+.hatch{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px}
+.h-card{background:var(--surface);border-top:2px solid var(--ink);padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.h-card .k{font-family:var(--mono);font-size:11px;color:var(--signal)}
+.h-card p{font-size:.92rem;color:var(--muted)}
+.h-card p b{color:var(--ink);font-weight:500}
+
+footer{border-top:1px solid var(--rule);padding-top:22px;font-size:.86rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px 26px}
+footer code{background:none;padding:0;color:var(--ink)}
+
+@media (max-width:720px){
+  .stage{grid-template-columns:26px 1fr;gap:6px 12px}
+  .stage .dr,.stage .who,.stage .ou{grid-column:2}
+  .enf .row,.enf.close .row{grid-template-columns:1fr;gap:6px}
+  .enf.close .row{grid-template-columns:110px 1fr 1fr}
+.enf .row.hd{display:none}
+}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="eyebrow">Atlas &nbsp;/&nbsp; docs/process.md &nbsp;/&nbsp; in force</div>
+  <h1>Ten stages,<br><em>five gates</em></h1>
+  <p class="thesis">Work decomposes into Epics, Features and Stories. <strong>Nothing is implemented until its change folder exists, validates, and a human has approved it</strong> — that is the one hard gate. After it, scenarios are worked one at a time, red&#8202;→&#8202;green, until every scenario in the delta has a passing test of the same name. The change is archived as the last commit on the same branch, so one PR carries the spec, the code, and the merge into the source of truth.</p>
+</header>
+
+<!-- ============ FIG 1 : THE RAIL ============ -->
+<section>
+  <h2>The line, end to end</h2>
+  <p class="lede">Every gate is a place where work stops until a named condition holds. Colour says who clears it: <span style="color:var(--signal)">a human</span>, or <span style="color:var(--machine)">the machine</span>.</p>
+  <figure>
+    <div class="scroll">
+      <svg class="dia" viewBox="0 0 1300 300" style="min-width:900px" role="img" aria-label="The Atlas pipeline as a rail: ten stages from Epic intake to merge, interrupted by five gates. G4, spec approval, is a hard stop dividing the specification half of the line from the implementation half.">
+        <defs>
+          <marker id="a-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
+        </defs>
+
+        <!-- G4 hard line -->
+        <line x1="591" y1="62" x2="591" y2="288" class="s-sig" stroke-width="1" stroke-dasharray="3 4" opacity=".7"/>
+        <text x="591" y="52" text-anchor="middle" class="cap f-sig">NOTHING IS IMPLEMENTED LEFT OF THIS LINE</text>
+
+        <!-- rail -->
+        <line x1="30" y1="190" x2="591" y2="190" class="s-mut" stroke-width="1.6"/>
+        <line x1="591" y1="190" x2="1246" y2="190" class="s-ink" stroke-width="3.4" marker-end="url(#a-ink)"/>
+        <text x="1256" y="194" class="mono f-mut">main</text>
+
+        <text x="470" y="166" text-anchor="middle" class="cap f-mut">SPECIFICATION</text>
+        <text x="770" y="166" text-anchor="middle" class="cap f-mut">IMPLEMENTATION</text>
+
+        <!-- gates -->
+        <g>
+          <line x1="237" y1="128" x2="237" y2="190" class="s-sig" stroke-width="1.4"/>
+          <rect x="212" y="98" width="50" height="30" rx="3" class="f-pap s-sig" stroke-width="1.4"/>
+          <text x="237" y="118" text-anchor="middle" class="hd f-sig">G1</text>
+          <text x="237" y="88" text-anchor="middle" class="cap f-mut">HUMAN</text>
+        </g>
+        <g>
+          <line x1="355" y1="128" x2="355" y2="190" class="s-sig" stroke-width="1.4"/>
+          <rect x="330" y="98" width="50" height="30" rx="3" class="f-pap s-sig" stroke-width="1.4"/>
+          <text x="355" y="118" text-anchor="middle" class="hd f-sig">G2</text>
+          <text x="355" y="88" text-anchor="middle" class="cap f-mut">HUMAN</text>
+        </g>
+        <g>
+          <line x1="591" y1="128" x2="591" y2="190" class="s-sig" stroke-width="3"/>
+          <rect x="562" y="96" width="58" height="34" rx="3" class="f-sig"/>
+          <text x="591" y="118" text-anchor="middle" class="hd f-pap">G4</text>
+          <text x="591" y="86" text-anchor="middle" class="cap f-sig">HUMAN + CI</text>
+        </g>
+        <g>
+          <line x1="945" y1="128" x2="945" y2="190" class="s-sig" stroke-width="1.4"/>
+          <rect x="920" y="98" width="50" height="30" rx="3" class="f-pap s-sig" stroke-width="1.4"/>
+          <text x="945" y="118" text-anchor="middle" class="hd f-sig">G7</text>
+          <text x="945" y="88" text-anchor="middle" class="cap f-mut">HUMAN</text>
+        </g>
+        <g>
+          <line x1="1184" y1="128" x2="1184" y2="190" class="s-mac" stroke-width="1.4"/>
+          <rect x="1159" y="98" width="50" height="30" rx="3" class="f-pap s-mac" stroke-width="1.4"/>
+          <text x="1184" y="118" text-anchor="middle" class="hd f-mac">G8</text>
+          <text x="1184" y="88" text-anchor="middle" class="cap f-mut">CI</text>
+        </g>
+
+        <!-- stages -->
+        <g>
+          <circle cx="60" cy="190" r="13" class="box"/><text x="60" y="194" text-anchor="middle" class="num f-mut">0</text><text x="60" y="224" text-anchor="middle">Epic</text>
+          <circle cx="178" cy="190" r="13" class="box"/><text x="178" y="194" text-anchor="middle" class="num f-mut">1</text><text x="178" y="224" text-anchor="middle">Feature</text>
+          <circle cx="296" cy="190" r="13" class="box"/><text x="296" y="194" text-anchor="middle" class="num f-mut">2</text><text x="296" y="224" text-anchor="middle">Stories</text>
+          <circle cx="414" cy="190" r="13" class="box"/><text x="414" y="194" text-anchor="middle" class="num f-mut">3</text><text x="414" y="224" text-anchor="middle">Grill</text>
+          <circle cx="532" cy="190" r="13" class="box"/><text x="532" y="194" text-anchor="middle" class="num f-mut">4</text><text x="532" y="224" text-anchor="middle">Propose</text>
+          <circle cx="650" cy="190" r="13" class="box"/><text x="650" y="194" text-anchor="middle" class="num f-mut">5</text><text x="650" y="224" text-anchor="middle">Red</text>
+          <circle cx="768" cy="190" r="13" class="box"/><text x="768" y="194" text-anchor="middle" class="num f-mut">6</text><text x="768" y="224" text-anchor="middle">Green</text>
+          <circle cx="886" cy="190" r="13" class="box"/><text x="886" y="194" text-anchor="middle" class="num f-mut">7</text><text x="886" y="224" text-anchor="middle">Review</text>
+          <circle cx="1004" cy="190" r="13" class="box"/><text x="1004" y="194" text-anchor="middle" class="num f-mut">8</text><text x="1004" y="224" text-anchor="middle">Archive</text>
+          <circle cx="1122" cy="190" r="13" class="box"/><text x="1122" y="194" text-anchor="middle" class="num f-mut">9</text><text x="1122" y="224" text-anchor="middle">Merge</text>
+        </g>
+
+        <!-- agent brackets -->
+        <g class="s-mut" stroke-width="1" fill="none">
+          <path d="M38 256 V250 H318 V256"/>
+          <path d="M392 256 V250 H554 V256"/>
+          <path d="M628 256 V250 H790 V256"/>
+          <path d="M864 256 V250 H908 V256"/>
+          <path d="M982 256 V250 H1144 V256"/>
+        </g>
+        <g class="mono f-mut" text-anchor="middle">
+          <text x="178" y="274">orchestrator · Opus</text>
+          <text x="473" y="274">spec-author · Opus</text>
+          <text x="709" y="274">implementer · Sonnet</text>
+          <text x="886" y="274">reviewer · Opus</text>
+          <text x="1063" y="274">janitor · Haiku</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption><b>The thin half of the rail is documentation; the thick half is code.</b> The model tier under each span is not chosen per session — it follows one rule: creating or judging requirements is Opus, executing an approved written-down plan is Sonnet, mechanical work whose correctness is visible in the diff is Haiku.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ FIG 2 : ANCHORS ============ -->
+<section>
+  <h2>Three levels, three anchors</h2>
+  <p class="lede">The repo owns content; GitHub owns state and order. Nothing is written down twice — an issue body holds a sentence of intent, a link, and gate checkboxes, never requirements.</p>
+  <figure>
+    <div class="scroll">
+      <svg class="dia" viewBox="0 0 1020 412" style="min-width:760px" role="img" aria-label="Epic, Feature and Story each map to a GitHub issue on the left and an anchor on disk on the right. Epics have no disk anchor. A Feature is a capability spec that lives forever; a Story is a change folder that lives until archive, when its delta is merged up into the Feature's spec.">
+        <defs>
+          <marker id="a-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
+          <marker id="a-b-sig" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--signal)"/></marker>
+        </defs>
+
+        <text x="70" y="46" class="cap f-mut">GITHUB — STATE AND ORDER, UNTIL CLOSED</text>
+        <text x="620" y="46" class="cap f-mut">REPO — CONTENT</text>
+        <line x1="70" y1="56" x2="390" y2="56" class="s-mut" stroke-width="1"/>
+        <line x1="620" y1="56" x2="980" y2="56" class="s-mut" stroke-width="1"/>
+
+        <!-- epic -->
+        <rect x="70" y="86" width="320" height="58" rx="3" class="box"/>
+        <text x="86" y="110" class="hd">Epic</text>
+        <text x="86" y="130" class="mono f-mut">issue · type Epic · "EPIC: &lt;noun phrase&gt;"</text>
+        <rect x="620" y="86" width="360" height="58" rx="3" class="f-none s-mut" stroke-width="1" stroke-dasharray="4 4"/>
+        <text x="636" y="120" class="f-mut">no anchor on disk — pure coordination</text>
+
+        <!-- feature -->
+        <rect x="70" y="186" width="320" height="58" rx="3" class="box"/>
+        <text x="86" y="210" class="hd">Feature</text>
+        <text x="86" y="230" class="mono f-mut">issue · type Feature · "FEAT: &lt;slug&gt;"</text>
+        <rect x="620" y="186" width="360" height="58" rx="3" class="box"/>
+        <text x="636" y="208" class="mono">openspec/specs/&lt;capability&gt;/spec.md</text>
+        <text x="636" y="230" class="cap f-mac">SOURCE OF TRUTH — LIVES FOREVER</text>
+
+        <!-- story -->
+        <rect x="70" y="286" width="320" height="58" rx="3" class="box"/>
+        <text x="86" y="310" class="hd">Story</text>
+        <text x="86" y="330" class="mono f-mut">issue · type Task · "&lt;change-id&gt;"</text>
+        <rect x="620" y="286" width="360" height="58" rx="3" class="box"/>
+        <text x="636" y="308" class="mono">openspec/changes/&lt;change-id&gt;/</text>
+        <text x="636" y="330" class="cap f-mut">DELTA — LIVES UNTIL ARCHIVE</text>
+
+        <!-- sub-issue arrows -->
+        <g class="s-mut" fill="none" stroke-width="1.2" color="var(--muted)">
+          <line x1="230" y1="144" x2="230" y2="182" marker-end="url(#a-b)"/>
+          <line x1="230" y1="244" x2="230" y2="282" marker-end="url(#a-b)"/>
+        </g>
+        <text x="240" y="168" class="mono f-mut">sub-issue of exactly one</text>
+        <text x="240" y="268" class="mono f-mut">sub-issue of exactly one</text>
+
+        <!-- anchors -->
+        <g class="s-mut" fill="none" stroke-width="1.2" color="var(--muted)">
+          <line x1="396" y1="215" x2="612" y2="215" marker-end="url(#a-b)"/>
+          <line x1="396" y1="315" x2="612" y2="315" marker-end="url(#a-b)"/>
+          <line x1="396" y1="115" x2="612" y2="115" stroke-dasharray="4 4"/>
+        </g>
+        <text x="504" y="207" text-anchor="middle" class="mono f-mut">is</text>
+        <text x="504" y="307" text-anchor="middle" class="mono f-mut">is</text>
+
+        <!-- archive arrow -->
+        <line x1="800" y1="282" x2="800" y2="250" class="s-sig" stroke-width="1.8" marker-end="url(#a-b-sig)" fill="none"/>
+        <text x="812" y="270" class="mono f-sig">merged here, and only here</text>
+
+        <text x="70" y="384" class="f-mut">Requirements live in specs. If an issue and a spec disagree, the spec wins and the issue is wrong.</text>
+      </svg>
+    </div>
+    <figcaption>The middle level is honest because <b>a Feature <em>is</em> a capability spec</b> — not a ceremony layer, a file. The only writer of <code>openspec/specs/</code> is <code>/opsx:archive</code>; no agent may hand-edit it, and a <code>deny</code> rule enforces that in every permission mode.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ LADDER ============ -->
+<section>
+  <h2>Stage by stage</h2>
+  <p class="lede">Driver, agent, and what comes out. Gates interrupt the ladder where work actually stops.</p>
+  <div class="ladder">
+
+    <div class="stage"><span class="n">0</span><span class="nm">Epic intake</span><span class="dr">you</span><span class="who"><i class="dot op"></i>orchestrator</span><span class="ou">Epic issue</span></div>
+    <div class="stage"><span class="n">1</span><span class="nm">Feature definition</span><span class="dr">you</span><span class="who"><i class="dot op"></i>orchestrator</span><span class="ou">Feature issue, sub-issue of an Epic</span></div>
+
+    <div class="gate"><span class="g">G1</span>
+      <div class="gt"><span class="gh">Feature ready</span>
+        <p>The Feature names one capability, the capability slug is decided, and it hangs off exactly one Epic.</p></div>
+      <span class="chip h">human</span></div>
+
+    <div class="stage"><span class="n">2</span><span class="nm">Story decomposition</span><span class="dr"><code>/to-tickets</code> on the Feature</span><span class="who"><i class="dot op"></i>orchestrator</span><span class="ou">Story issues as sub-issues, blocking edges declared</span></div>
+
+    <div class="gate"><span class="g">G2</span>
+      <div class="gt"><span class="gh">Decomposition accepted</span>
+        <p>Every Story states one sentence of intent. Blocking edges are declared and acyclic. You have said yes to the breakdown — <code>to-tickets</code> iterates until you do.</p></div>
+      <span class="chip h">human</span></div>
+
+    <div class="stage"><span class="n">3</span><span class="nm">Grill</span><span class="dr"><code>/grill-with-docs</code></span><span class="who"><i class="dot op"></i>spec-author</span><span class="ou"><code>design.md</code> Open Questions filled in — “None” is valid and required — plus any new <code>CONTEXT.md</code> terms</span></div>
+    <div class="stage"><span class="n">4</span><span class="nm">Propose</span><span class="dr"><code>/opsx:propose &lt;change-id&gt;</code></span><span class="who"><i class="dot op"></i>spec-author</span><span class="ou">The change folder: proposal, delta specs, design, tasks. <b>Cut the branch here</b>, commit as <code>docs(&lt;capability&gt;): propose &lt;change-id&gt;</code></span></div>
+
+    <div class="gate"><span class="g">G4</span>
+      <div class="gt"><span class="gh">Spec approved — the hard gate</span>
+        <ul>
+          <li><code>openspec validate &lt;change-id&gt; --strict</code> exits 0</li>
+          <li>the delta uses ADDED / MODIFIED / REMOVED correctly against current specs</li>
+          <li>every requirement has at least one scenario, and error and edge cases have scenarios too — not just the happy path</li>
+          <li>you have read <code>proposal.md</code> and the delta</li>
+          <li>the Story issue carries a comment beginning with the exact line <code>G4: approved</code></li>
+        </ul>
+        <p>The <em>decision</em> must be a human’s; the keystrokes need not be. An agent may record it on instruction and must never originate it. Check with <code>pnpm run check:g4</code>. No implementation commit may precede that comment.</p></div>
+      <span class="chip h">human + ci</span></div>
+
+    <div class="stage"><span class="n">5</span><span class="nm">Red</span><span class="dr">the first unsatisfied scenario</span><span class="who"><i class="dot so"></i>implementer</span><span class="ou">one failing acceptance test, named for that scenario</span></div>
+    <div class="stage"><span class="n">6</span><span class="nm">Green, then next</span><span class="dr"><code>/opsx:apply</code> driving <code>/tdd</code></span><span class="who"><i class="dot so"></i>implementer</span><span class="ou">one scenario per cycle, until the delta is satisfied</span></div>
+    <div class="stage"><span class="n">7</span><span class="nm">Review</span><span class="dr"><code>/code-review</code></span><span class="who"><i class="dot op"></i>reviewer</span><span class="ou">findings on two axes — engineering standards, and fidelity to the approved delta</span></div>
+
+    <div class="gate"><span class="g">G7</span>
+      <div class="gt"><span class="gh">Review clean</span>
+        <p>No unresolved findings on either axis. The reviewer never edits — it reports, and the implementer fixes. Review runs <em>before</em> the archive commit, so the reviewer sees the change folder at the path you approved at G4.</p></div>
+      <span class="chip h">human</span></div>
+
+    <div class="stage"><span class="n">8</span><span class="nm">Archive</span><span class="dr"><code>/opsx:archive</code>, same branch</span><span class="who"><i class="dot ha"></i>janitor</span><span class="ou">delta merged into <code>openspec/specs/</code>, folder moved under <code>changes/archive/</code>, PR marked ready</span></div>
+    <div class="stage"><span class="n">9</span><span class="nm">Merge</span><span class="dr">squash-merge</span><span class="who"><i class="dot ha"></i>janitor</span><span class="ou">issue auto-closed, parents settled, <code>docs/graph.mmd</code> regenerated with no amber node left standing</span></div>
+
+    <div class="gate ci"><span class="g">G8</span>
+      <div class="gt"><span class="gh">CI green</span>
+        <p>The only gate between a finished Story and <code>main</code>. It also carries what used to be a separate archive gate: <code>openspec validate --archived</code> proves every <code>tasks.md</code> box is ticked, and spec-diff containment proves the archive touched only capabilities the delta claims.</p></div>
+      <span class="chip m">machine</span></div>
+
+  </div>
+</section>
+
+<!-- ============ FIG 3 : THE LOOP ============ -->
+<section>
+  <h2>One scenario at a time</h2>
+  <p class="lede">A settled spec is a complete set of behaviours imagined before any code — which is exactly what the <code>tdd</code> skill calls horizontal slicing and names an anti-pattern. The resolution is consumption order: the spec is written up front, the tests are not.</p>
+  <figure>
+    <div class="scroll">
+      <svg class="dia" viewBox="0 0 1120 300" style="min-width:840px" role="img" aria-label="Left: the rule — take one unsatisfied scenario from the delta, write one test, make it pass, then return for the next. Right: the anti-pattern — all four scenarios transcribed into tests up front, which rule 3 forbids.">
+        <defs>
+          <marker id="a-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
+          <marker id="a-c-sig" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--signal)"/></marker>
+        </defs>
+
+        <line x1="560" y1="20" x2="560" y2="280" class="s-mut" stroke-width="1" stroke-dasharray="3 5"/>
+        <text x="40" y="30" class="cap f-mac">THE RULE — AGENTS.md #3</text>
+        <text x="600" y="30" class="cap f-sig">THE ANTI-PATTERN</text>
+
+        <!-- LEFT -->
+        <rect x="40" y="90" width="150" height="150" rx="3" class="sunkbox"/>
+        <text x="55" y="82" class="cap f-mut">DELTA</text>
+        <rect x="48" y="100" width="134" height="26" rx="2" class="f-sig" opacity=".16"/>
+        <text x="58" y="117" class="mono f-sig">Scenario: A</text>
+        <text x="58" y="152" class="mono f-mut">Scenario: B</text>
+        <text x="58" y="187" class="mono f-mut">Scenario: C</text>
+        <text x="58" y="222" class="mono f-mut">Scenario: D</text>
+
+        <line x1="196" y1="113" x2="256" y2="113" class="s-ink" stroke-width="1.4" marker-end="url(#a-c)"/>
+        <text x="226" y="104" text-anchor="middle" class="mono f-mut">take one</text>
+
+        <rect x="262" y="90" width="180" height="46" rx="3" class="box"/>
+        <text x="276" y="108" class="hd f-sig">Red</text>
+        <text x="276" y="126" class="mono f-mut">one test, title identical</text>
+
+        <line x1="352" y1="142" x2="352" y2="176" class="s-ink" stroke-width="1.4" marker-end="url(#a-c)"/>
+
+        <rect x="262" y="182" width="180" height="46" rx="3" class="box"/>
+        <text x="276" y="200" class="hd f-mac">Green</text>
+        <text x="276" y="218" class="mono f-mut">make it pass, stop</text>
+
+        <path d="M448 205 H500 V62 H115 V84" class="s-ink f-none" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#a-c)"/>
+        <text x="300" y="54" text-anchor="middle" class="mono f-mut">next unsatisfied scenario</text>
+
+        <text x="40" y="272" class="f-mut">The coverage lint runs only at PR time, never per commit.</text>
+
+        <!-- RIGHT -->
+        <rect x="600" y="90" width="150" height="150" rx="3" class="sunkbox"/>
+        <text x="615" y="82" class="cap f-mut">DELTA</text>
+        <text x="618" y="117" class="mono f-mut">Scenario: A</text>
+        <text x="618" y="152" class="mono f-mut">Scenario: B</text>
+        <text x="618" y="187" class="mono f-mut">Scenario: C</text>
+        <text x="618" y="222" class="mono f-mut">Scenario: D</text>
+
+        <g class="s-sig f-none" stroke-width="1.3" stroke-dasharray="4 3">
+          <line x1="756" y1="113" x2="856" y2="113" marker-end="url(#a-c-sig)"/>
+          <line x1="756" y1="148" x2="856" y2="148" marker-end="url(#a-c-sig)"/>
+          <line x1="756" y1="183" x2="856" y2="183" marker-end="url(#a-c-sig)"/>
+          <line x1="756" y1="218" x2="856" y2="218" marker-end="url(#a-c-sig)"/>
+        </g>
+
+        <g>
+          <rect x="862" y="99" width="180" height="28" rx="3" class="box"/><text x="876" y="118" class="mono f-mut">test A — not yet run</text>
+          <rect x="862" y="134" width="180" height="28" rx="3" class="box"/><text x="876" y="153" class="mono f-mut">test B — not yet run</text>
+          <rect x="862" y="169" width="180" height="28" rx="3" class="box"/><text x="876" y="188" class="mono f-mut">test C — not yet run</text>
+          <rect x="862" y="204" width="180" height="28" rx="3" class="box"/><text x="876" y="223" class="mono f-mut">test D — not yet run</text>
+        </g>
+        <text x="600" y="272" class="f-sig">Bulk transcription. Never do this, whatever the coverage lint would say.</text>
+      </svg>
+    </div>
+    <figcaption><b>Acceptance tests are one per scenario, at the seam, titled identically</b> — that identity is machine-checked at PR time. Unit tests below the seam are free-form and traced to nothing. The seam is one exported entry point named in <code>design.md</code>; a Story whose design names no seam fails the Definition of Ready, and the openspec design template has no seam section, so you add <code>### The seam</code> under Decisions yourself.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ FIG 4 : BRANCH ============ -->
+<section>
+  <h2>One Story, one branch, one PR</h2>
+  <p class="lede">The archive is the last commit on the same branch, not a follow-up PR. That is what lets a single PR carry the spec, the code and the merge into the source of truth.</p>
+  <figure>
+    <div class="scroll">
+      <svg class="dia" viewBox="0 0 1120 264" style="min-width:820px" role="img" aria-label="A story branch cut from origin slash main at stage 4, carrying a docs propose commit, feature commits one per scenario, a review-fix commit and a final chore archive commit, then squash-merged back into main. G4 sits after the propose commit; G7 sits before the archive commit.">
+        <defs>
+          <marker id="a-d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
+        </defs>
+
+        <text x="60" y="52" class="mono f-mut">origin/main — protected, linear</text>
+        <line x1="60" y1="70" x2="1040" y2="70" class="s-ink" stroke-width="2.6" marker-end="url(#a-d)"/>
+
+        <path d="M250 70 V158 Q250 190 282 190 H906" class="s-ink f-none" stroke-width="2"/>
+        <path d="M906 190 H946 Q978 190 978 158 V80" class="s-ink f-none" stroke-width="2" marker-end="url(#a-d)"/>
+
+        <text x="256" y="100" class="mono f-mut">branch cut at Stage 4, from origin/main</text>
+        <text x="256" y="116" class="mono f-sig">then: git branch --unset-upstream</text>
+
+        <g class="s-sig" stroke-width="1" stroke-dasharray="3 4">
+          <line x1="400" y1="152" x2="400" y2="190"/>
+          <line x1="815" y1="152" x2="815" y2="190"/>
+        </g>
+        <text x="400" y="144" text-anchor="middle" class="hd f-sig">G4</text>
+        <text x="815" y="144" text-anchor="middle" class="hd f-sig">G7</text>
+
+        <g>
+          <circle cx="330" cy="190" r="7" class="box"/>
+          <circle cx="470" cy="190" r="7" class="box"/>
+          <circle cx="610" cy="190" r="7" class="box"/>
+          <circle cx="750" cy="190" r="7" class="box"/>
+          <circle cx="880" cy="190" r="7" class="f-sig"/>
+        </g>
+        <g class="mono f-mut" text-anchor="middle">
+          <text x="330" y="216">docs: propose</text>
+          <text x="470" y="216">feat: scenario 1</text>
+          <text x="610" y="216">feat: scenario 2</text>
+          <text x="750" y="216">fix: review</text>
+        </g>
+        <text x="880" y="216" text-anchor="middle" class="mono f-sig">chore(archive)</text>
+
+        <text x="990" y="112" class="mono f-mut">squash-merge</text>
+        <text x="990" y="128" class="mono f-mac">G8 · CI green</text>
+
+        <text x="60" y="248" class="f-mut">Zero required approvals on the ruleset — approvals are theatre with one human. The status checks are the gate.</text>
+      </svg>
+    </div>
+    <figcaption><b>The archive commit is the one that breaks the naming pattern:</b> <code>chore(archive): &lt;change-id&gt;</code>, scoped <code>archive</code> rather than the capability, because it moves the change folder and merges the delta rather than changing that capability’s behaviour. Do not extrapolate <code>chore(&lt;capability&gt;)</code> from it.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ FIG 5 : CLOSING ============ -->
+<section>
+  <h2>What closes, and what never does</h2>
+  <p class="lede"><code>open</code> has exactly one meaning at every level: there is outstanding work under this node. It has to — ADR-0012 dropped the project board, so open/closed is the primary state signal, and a signal carrying two meanings stops answering <em>where is everything</em>.</p>
+  <figure>
+    <div class="scroll">
+      <svg class="dia" viewBox="0 0 1080 380" style="min-width:820px" role="img" aria-label="Closing settles one level per pass: the last Story merging makes its Feature ready to close, closing that Feature makes the Epic ready, then the Epic closes. A new Story cut against the capability reopens the Feature.">
+        <defs>
+          <marker id="a-e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--amber)"/></marker>
+        </defs>
+
+        <text x="20" y="30" class="cap f-mut">PASS 1 — THE LAST STORY MERGES</text>
+        <text x="380" y="30" class="cap f-mut">PASS 2 — THE FEATURE CLOSES</text>
+        <text x="740" y="30" class="cap f-mut">PASS 3 — THE EPIC CLOSES</text>
+
+        <!-- ============ panel 1 ============ -->
+        <g>
+          <path d="M180 84 V100 H90 V261 M90 189 H105 M90 225 H105 M90 261 H105" class="s-mut f-none" stroke-width="1"/>
+          <rect x="105" y="56" width="150" height="28" rx="3" class="box"/>
+          <text x="115" y="74" class="mono">#12 EPIC</text>
+          <rect x="105" y="116" width="150" height="28" rx="3" class="f-pap s-amb" stroke-width="2"/>
+          <text x="115" y="134" class="mono f-amb">#14 FEAT: cli-version</text>
+          <rect x="105" y="176" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="115" y="193" class="mono f-mut">#21 add-version</text>
+          <rect x="105" y="212" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="115" y="229" class="mono f-mut">#22 add-flag</text>
+          <rect x="105" y="248" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="115" y="265" class="mono f-mut">#23 add-help</text>
+          <text x="267" y="134" class="cap f-amb">READY</text>
+          <text x="267" y="265" class="cap f-mut">CLOSED</text>
+        </g>
+
+        <!-- ============ panel 2 ============ -->
+        <g>
+          <path d="M540 84 V100 H450 V261 M450 189 H465 M450 225 H465 M450 261 H465" class="s-mut f-none" stroke-width="1"/>
+          <rect x="465" y="56" width="150" height="28" rx="3" class="f-pap s-amb" stroke-width="2"/>
+          <text x="475" y="74" class="mono f-amb">#12 EPIC</text>
+          <rect x="465" y="116" width="150" height="28" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="475" y="134" class="mono f-mut">#14 FEAT: cli-version</text>
+          <rect x="465" y="176" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="475" y="193" class="mono f-mut">#21 add-version</text>
+          <rect x="465" y="212" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="475" y="229" class="mono f-mut">#22 add-flag</text>
+          <rect x="465" y="248" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="475" y="265" class="mono f-mut">#23 add-help</text>
+          <text x="627" y="74" class="cap f-amb">READY</text>
+        </g>
+
+        <!-- ============ panel 3 ============ -->
+        <g>
+          <path d="M900 84 V100 H810 V261 M810 189 H825 M810 225 H825 M810 261 H825" class="s-mut f-none" stroke-width="1"/>
+          <rect x="825" y="56" width="150" height="28" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="835" y="74" class="mono f-mut">#12 EPIC</text>
+          <rect x="825" y="116" width="150" height="28" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="835" y="134" class="mono f-mut">#14 FEAT: cli-version</text>
+          <rect x="825" y="176" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="835" y="193" class="mono f-mut">#21 add-version</text>
+          <rect x="825" y="212" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="835" y="229" class="mono f-mut">#22 add-flag</text>
+          <rect x="825" y="248" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="835" y="265" class="mono f-mut">#23 add-help</text>
+        </g>
+
+        <!-- reopen -->
+        <path d="M900 300 V352 H45 V130 H99" class="s-amb f-none" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#a-e)"/>
+        <text x="480" y="344" text-anchor="middle" class="mono f-amb">a new Story is cut against the capability — gh issue reopen 14</text>
+      </svg>
+    </div>
+    <figcaption><b>Amber is the graph's own encoding:</b> <code>docs/graph.mmd</code> draws a ready-to-close parent with an amber border, so the whole tree is checked at once rather than one issue at a time. The generator derives that from each issue's own state, not from the rollup, so it does not lag. Nothing in this picture touches <code>openspec/specs/cli-version/spec.md</code> — the spec is unaffected throughout, which is the point.</figcaption>
+  </figure>
+
+  <div class="enf close">
+    <div class="row hd"><span>Level</span><span>Close when</span><span>Reopen when</span></div>
+    <div class="row"><span class="l">Story</span><span class="w">Its PR merges — automatic, nothing to do.</span><span class="w">Never. New work is a new Story.</span></div>
+    <div class="row"><span class="l">Feature</span><span class="w">No open Story under it, and none queued.</span><span class="w">A new Story is cut against that capability.</span></div>
+    <div class="row"><span class="l">Epic</span><span class="w">Every Feature under it is closed.</span><span class="w">Any child Feature reopens.</span></div>
+  </div>
+
+  <p><b>A Feature is not “forever” because its issue stays open.</b> What lives forever is the spec. The issue tracks work against it, and reopening is free — which is what keeps one Feature issue matched to one capability spec instead of accumulating a second one every time the capability is revisited.</p>
+  <p><b>Read the children, not the parent’s rollup.</b> <code>sub_issues_summary</code> is eventually consistent — it was observed still reading <code>0/1</code> immediately after the child closed, correcting moments later. Fine for a glance, wrong for a decision made in the same breath as the close. And a triaged bug carrying <code>needs-triage</code> with no issue type sits outside the hierarchy by design: it is inbox, not plan, and does not hold its Feature open.</p>
+</section>
+
+<!-- ============ CI ============ -->
+<section>
+  <h2>What CI actually checks</h2>
+  <p class="lede">Eight checks on every PR. Checks 2–6 are bespoke scripts in <code>scripts/</code> — the most likely part of the system to rot.</p>
+  <div class="checks">
+    <div class="check"><span class="ci">01</span><span class="cn">Validate everything</span><span class="cd"><code>openspec validate --all --strict --no-interactive</code></span></div>
+    <div class="check key"><span class="ci">02</span><span class="cn">Spec-diff containment</span><span class="cd">Every file changed under <code>openspec/specs/</code> belongs to a capability the archived delta names. On a <code>chore/</code> branch the set must be empty. This is the check that makes the source of truth safe.</span></div>
+    <div class="check"><span class="ci">03</span><span class="cn">Single-change rule</span><span class="cd">A <code>story/</code> PR adds exactly one directory under <code>changes/archive/</code> and leaves no active folder behind.<span class="tag">staged — reports locally</span></span></div>
+    <div class="check"><span class="ci">04</span><span class="cn">Scenario coverage</span><span class="cd">Every <code>#### Scenario:</code> in the delta has an acceptance test whose title matches it verbatim.<span class="tag">staged — reports locally</span></span></div>
+    <div class="check key"><span class="ci">05</span><span class="cn">G4 approval recorded</span><span class="cd">The Story issue carries a comment beginning <code>G4: approved</code>. This is what turns “no implementation before G4” from a convention into a red build.</span></div>
+    <div class="check"><span class="ci">06</span><span class="cn">Commit hygiene</span><span class="cd">No commit on the branch carries an attribution trailer or names a tool.</span></div>
+    <div class="check"><span class="ci">07</span><span class="cn">Verify</span><span class="cd"><code>pnpm run verify</code> — lint, typecheck, test.</span></div>
+    <div class="check"><span class="ci">08</span><span class="cn">Archive complete</span><span class="cd"><code>openspec validate --archived</code> — every <code>tasks.md</code> checkbox in the newly archived change is ticked.</span></div>
+  </div>
+  <p><b>Why 3 and 4 are staged.</b> Run locally on a Story still in flight they report rather than fail — the single-change rule reads “still active” until Stage 8, and coverage reports <code>2/4 covered — next: "&lt;title&gt;"</code>. Failing locally would demand every acceptance test at once, which is precisely the bulk transcription rule 3 forbids. In CI they bind, because a PR asserts the Story is finished.</p>
+</section>
+
+<!-- ============ ENFORCEMENT ============ -->
+<section>
+  <h2>How much of this is really enforced</h2>
+  <p class="lede">Worth knowing precisely, because the tables read stronger than reality. Two layers are mechanical; the rest is convention caught at review.</p>
+  <div class="enf">
+    <div class="row hd"><span>Layer</span><span>What it makes impossible</span><span>Strength</span></div>
+    <div class="row"><span class="l">deny rules in<br>.claude/settings.json</span><span class="w">Any agent editing <code>openspec/specs/**</code>, <code>changes/archive/**</code> or <code>pnpm-lock.yaml</code> with Edit or Write — verified against <code>bypassPermissions</code>. <code>/opsx:archive</code> stays free because it writes through the CLI over Bash.</span><span class="s hard">Hard — but only when the session starts at the repo root</span></div>
+    <div class="row"><span class="l">agent frontmatter<br>tools / disallowedTools</span><span class="w">orchestrator, reviewer and janitor holding any file-editing tool.</span><span class="s hard">Hard — with one hole: an agent with Bash can still write through the shell</span></div>
+    <div class="row"><span class="l">CI check 2</span><span class="w">A spec file changing outside the capabilities the delta claims, whatever produced the change.</span><span class="s hard">Hard, at merge time</span></div>
+    <div class="row"><span class="l">spec-author out of src/<br>implementer out of the delta</span><span class="w">Nothing. Path-scoped permissions are session-wide, not per-agent, and the per-agent hook that would express this is skipped unless the folder is explicitly trusted.</span><span class="s soft">Convention — caught at review</span></div>
+    <div class="row"><span class="l">red before green</span><span class="w">Nothing. Checks 4 and 5 prove tests exist, are named after scenarios, and pass — not that one was red first. Nothing short of commit-order forensics does, and one rebase defeats that.</span><span class="s soft">Convention — a documented discipline and a PR checkbox</span></div>
+    <div class="row"><span class="l">a human wrote<br>“G4: approved”</span><span class="w">Nothing. Agents act through the owner’s token. Check 5 proves the decision was <em>recorded</em>, converting a silent omission into a blocked merge. Integrity rests on agents never originating the marker.</span><span class="s soft">Convention — plus a red build if absent</span></div>
+  </div>
+  <p>The marker is the exact line <code>G4: approved</code>, not the bare word, because “approved” occurs constantly in ordinary prose — an agent writing <em>“waiting on the approved comment”</em> would otherwise forge the gate for any grep-based reader.</p>
+</section>
+
+<!-- ============ HATCHES ============ -->
+<section>
+  <h2>When not to run any of this</h2>
+  <div class="hatch">
+    <div class="h-card">
+      <span class="k">chore/&lt;slug&gt;</span>
+      <h3>The escape hatch</h3>
+      <p>No behaviour change, no Story, no Feature, and it <b>may not touch <code>openspec/specs/</code> at all</b> — check 2 requires an empty set. Tooling, dependency bumps, docs, CI. Without this lane a one-line bump would need an Epic and you would abandon the process within a month. If you reach for it to add <em>behaviour</em>, that is the process telling you to write a Story.</p>
+    </div>
+    <div class="h-card">
+      <span class="k">&lt; 2 hours</span>
+      <h3>The proportionality rule</h3>
+      <p>The gates cost roughly 45–90 minutes of your own time per Story. <b>A Story smaller than about two hours of work must not go through the full pipeline</b> — batch it, or route it through <code>chore/</code>. One exception: a Story whose purpose is to exercise the pipeline itself, which must say so in its intent. Absent that sentence, a cold agent should push back on the assignment rather than proceed.</p>
+    </div>
+    <div class="h-card">
+      <span class="k">if it hurts</span>
+      <h3>Cut in this order</h3>
+      <p>Fold Stage 3 into Stage 4 · fold Stage 7 into Stage 8 · drop the Epic level · drop CI checks 3 and 4. <b>Never cut G4 or CI check 2</b> — those two are the process; everything else is scaffolding around them. The retrospective scores this list against the first end-to-end Story: the order changed, the two never-cut items did not.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span><code>docs/process.md</code> — the reasoning</span>
+  <span><code>AGENTS.md</code> — the operative summary</span>
+  <span><code>docs/adr/</code> — fourteen decisions</span>
+  <span><code>docs/retrospective.md</code> — what it cost</span>
+</footer>
+
+</div>
+
+</body></html>

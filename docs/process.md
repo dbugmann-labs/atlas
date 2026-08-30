@@ -60,6 +60,7 @@ atlas/
 │   ├── adr/NNNN-kebab-title.md
 │   ├── agents/{issue-tracker.md, domain.md, triage-labels.md}   # written by setup-matt-pocock-skills
 │   ├── graph.mmd                 # generated, read-only
+│   ├── pipeline.html             # this document drawn; open from disk, no build step
 │   └── parking-lot.md            # product ideas, deliberately not acted on
 ├── .claude/agents/*.md           # subagent definitions + model routing
 ├── .github/
