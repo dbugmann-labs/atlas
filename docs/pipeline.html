@@ -17,6 +17,7 @@
   --signal-wash:#F0DCD8;
   --machine:#2A6459;
   --machine-wash:#D7E5E1;
+  --amber:#8A5A0C;
   --sans:'Archivo',ui-sans-serif,system-ui,sans-serif;
   --serif:'Newsreader',Georgia,'Times New Roman',serif;
   --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -34,6 +35,7 @@
     --signal-wash:#2C1A17;
     --machine:#5FB09E;
     --machine-wash:#12241F;
+  --amber:#D9A441;
   }
 }
 :root[data-theme="dark"]{
@@ -48,6 +50,7 @@
   --signal-wash:#2C1A17;
   --machine:#5FB09E;
   --machine-wash:#12241F;
+  --amber:#D9A441;
 }
 
 body{
@@ -88,6 +91,7 @@ figure{margin:0;display:flex;flex-direction:column;gap:12px}
 .dia .hd{font-family:var(--sans);font-size:12px;font-weight:600}
 .f-sig{fill:var(--signal)}.s-sig{stroke:var(--signal)}
 .f-mac{fill:var(--machine)}.s-mac{stroke:var(--machine)}
+.f-amb{fill:var(--amber)}.s-amb{stroke:var(--amber)}
 .f-mut{fill:var(--muted)}.s-mut{stroke:var(--muted)}
 .f-pap{fill:var(--surface)}
 .f-none{fill:none}
@@ -135,6 +139,7 @@ figcaption b{color:var(--ink);font-weight:500}
 /* ---- enforcement ---- */
 .enf{display:flex;flex-direction:column;gap:2px}
 .enf .row{display:grid;grid-template-columns:minmax(200px,1fr) minmax(240px,1.6fr) 128px;gap:16px;padding:13px 14px;background:var(--surface);align-items:baseline}
+.enf.close .row{grid-template-columns:110px 1fr 1fr}
 .enf .row.hd{background:transparent;padding-bottom:4px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .enf .l{font-family:var(--mono);font-size:.82rem;line-height:1.45}
 .enf .w{font-size:.9rem;color:var(--muted)}
@@ -155,8 +160,9 @@ footer code{background:none;padding:0;color:var(--ink)}
 @media (max-width:720px){
   .stage{grid-template-columns:26px 1fr;gap:6px 12px}
   .stage .dr,.stage .who,.stage .ou{grid-column:2}
-  .enf .row{grid-template-columns:1fr;gap:6px}
-  .enf .row.hd{display:none}
+  .enf .row,.enf.close .row{grid-template-columns:1fr;gap:6px}
+  .enf.close .row{grid-template-columns:110px 1fr 1fr}
+.enf .row.hd{display:none}
 }
 </style>
 
@@ -372,7 +378,7 @@ footer code{background:none;padding:0;color:var(--ink)}
       <span class="chip h">human</span></div>
 
     <div class="stage"><span class="n">8</span><span class="nm">Archive</span><span class="dr"><code>/opsx:archive</code>, same branch</span><span class="who"><i class="dot ha"></i>janitor</span><span class="ou">delta merged into <code>openspec/specs/</code>, folder moved under <code>changes/archive/</code>, PR marked ready</span></div>
-    <div class="stage"><span class="n">9</span><span class="nm">Merge</span><span class="dr">squash-merge</span><span class="who"><i class="dot ha"></i>janitor</span><span class="ou">issue auto-closed, <code>docs/graph.mmd</code> regenerated</span></div>
+    <div class="stage"><span class="n">9</span><span class="nm">Merge</span><span class="dr">squash-merge</span><span class="who"><i class="dot ha"></i>janitor</span><span class="ou">issue auto-closed, parents settled, <code>docs/graph.mmd</code> regenerated with no amber node left standing</span></div>
 
     <div class="gate ci"><span class="g">G8</span>
       <div class="gt"><span class="gh">CI green</span>
@@ -503,6 +509,88 @@ footer code{background:none;padding:0;color:var(--ink)}
     </div>
     <figcaption><b>The archive commit is the one that breaks the naming pattern:</b> <code>chore(archive): &lt;change-id&gt;</code>, scoped <code>archive</code> rather than the capability, because it moves the change folder and merges the delta rather than changing that capability’s behaviour. Do not extrapolate <code>chore(&lt;capability&gt;)</code> from it.</figcaption>
   </figure>
+</section>
+
+<!-- ============ FIG 5 : CLOSING ============ -->
+<section>
+  <h2>What closes, and what never does</h2>
+  <p class="lede"><code>open</code> has exactly one meaning at every level: there is outstanding work under this node. It has to — ADR-0012 dropped the project board, so open/closed is the primary state signal, and a signal carrying two meanings stops answering <em>where is everything</em>.</p>
+  <figure>
+    <div class="scroll">
+      <svg class="dia" viewBox="0 0 1080 380" style="min-width:820px" role="img" aria-label="Closing settles one level per pass: the last Story merging makes its Feature ready to close, closing that Feature makes the Epic ready, then the Epic closes. A new Story cut against the capability reopens the Feature.">
+        <defs>
+          <marker id="a-e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--amber)"/></marker>
+        </defs>
+
+        <text x="20" y="30" class="cap f-mut">PASS 1 — THE LAST STORY MERGES</text>
+        <text x="380" y="30" class="cap f-mut">PASS 2 — THE FEATURE CLOSES</text>
+        <text x="740" y="30" class="cap f-mut">PASS 3 — THE EPIC CLOSES</text>
+
+        <!-- ============ panel 1 ============ -->
+        <g>
+          <path d="M180 84 V100 H90 V261 M90 189 H105 M90 225 H105 M90 261 H105" class="s-mut f-none" stroke-width="1"/>
+          <rect x="105" y="56" width="150" height="28" rx="3" class="box"/>
+          <text x="115" y="74" class="mono">#12 EPIC</text>
+          <rect x="105" y="116" width="150" height="28" rx="3" class="f-pap s-amb" stroke-width="2"/>
+          <text x="115" y="134" class="mono f-amb">#14 FEAT: cli-version</text>
+          <rect x="105" y="176" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="115" y="193" class="mono f-mut">#21 add-version</text>
+          <rect x="105" y="212" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="115" y="229" class="mono f-mut">#22 add-flag</text>
+          <rect x="105" y="248" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="115" y="265" class="mono f-mut">#23 add-help</text>
+          <text x="267" y="134" class="cap f-amb">READY</text>
+          <text x="267" y="265" class="cap f-mut">CLOSED</text>
+        </g>
+
+        <!-- ============ panel 2 ============ -->
+        <g>
+          <path d="M540 84 V100 H450 V261 M450 189 H465 M450 225 H465 M450 261 H465" class="s-mut f-none" stroke-width="1"/>
+          <rect x="465" y="56" width="150" height="28" rx="3" class="f-pap s-amb" stroke-width="2"/>
+          <text x="475" y="74" class="mono f-amb">#12 EPIC</text>
+          <rect x="465" y="116" width="150" height="28" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="475" y="134" class="mono f-mut">#14 FEAT: cli-version</text>
+          <rect x="465" y="176" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="475" y="193" class="mono f-mut">#21 add-version</text>
+          <rect x="465" y="212" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="475" y="229" class="mono f-mut">#22 add-flag</text>
+          <rect x="465" y="248" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="475" y="265" class="mono f-mut">#23 add-help</text>
+          <text x="627" y="74" class="cap f-amb">READY</text>
+        </g>
+
+        <!-- ============ panel 3 ============ -->
+        <g>
+          <path d="M900 84 V100 H810 V261 M810 189 H825 M810 225 H825 M810 261 H825" class="s-mut f-none" stroke-width="1"/>
+          <rect x="825" y="56" width="150" height="28" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="835" y="74" class="mono f-mut">#12 EPIC</text>
+          <rect x="825" y="116" width="150" height="28" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="835" y="134" class="mono f-mut">#14 FEAT: cli-version</text>
+          <rect x="825" y="176" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="835" y="193" class="mono f-mut">#21 add-version</text>
+          <rect x="825" y="212" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="835" y="229" class="mono f-mut">#22 add-flag</text>
+          <rect x="825" y="248" width="150" height="26" rx="3" class="sunkbox" stroke-dasharray="3 3"/>
+          <text x="835" y="265" class="mono f-mut">#23 add-help</text>
+        </g>
+
+        <!-- reopen -->
+        <path d="M900 300 V352 H45 V130 H99" class="s-amb f-none" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#a-e)"/>
+        <text x="480" y="344" text-anchor="middle" class="mono f-amb">a new Story is cut against the capability — gh issue reopen 14</text>
+      </svg>
+    </div>
+    <figcaption><b>Amber is the graph's own encoding:</b> <code>docs/graph.mmd</code> draws a ready-to-close parent with an amber border, so the whole tree is checked at once rather than one issue at a time. The generator derives that from each issue's own state, not from the rollup, so it does not lag. Nothing in this picture touches <code>openspec/specs/cli-version/spec.md</code> — the spec is unaffected throughout, which is the point.</figcaption>
+  </figure>
+
+  <div class="enf close">
+    <div class="row hd"><span>Level</span><span>Close when</span><span>Reopen when</span></div>
+    <div class="row"><span class="l">Story</span><span class="w">Its PR merges — automatic, nothing to do.</span><span class="w">Never. New work is a new Story.</span></div>
+    <div class="row"><span class="l">Feature</span><span class="w">No open Story under it, and none queued.</span><span class="w">A new Story is cut against that capability.</span></div>
+    <div class="row"><span class="l">Epic</span><span class="w">Every Feature under it is closed.</span><span class="w">Any child Feature reopens.</span></div>
+  </div>
+
+  <p><b>A Feature is not “forever” because its issue stays open.</b> What lives forever is the spec. The issue tracks work against it, and reopening is free — which is what keeps one Feature issue matched to one capability spec instead of accumulating a second one every time the capability is revisited.</p>
+  <p><b>Read the children, not the parent’s rollup.</b> <code>sub_issues_summary</code> is eventually consistent — it was observed still reading <code>0/1</code> immediately after the child closed, correcting moments later. Fine for a glance, wrong for a decision made in the same breath as the close. And a triaged bug carrying <code>needs-triage</code> with no issue type sits outside the hierarchy by design: it is inbox, not plan, and does not hold its Feature open.</p>
 </section>
 
 <!-- ============ CI ============ -->
